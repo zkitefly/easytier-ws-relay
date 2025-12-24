@@ -13,7 +13,8 @@ export default {
       return new Response('ok', { status: 200 });
     }
 
-    if (pathname === '/ws' || pathname === '/ws/') {
+    const wsPath = '/' + env.WS_PATH || '/ws';
+    if (pathname === wsPath || pathname === wsPath + '/') {
       if (request.headers.get('Upgrade') !== 'websocket') {
         return new Response('Expected WebSocket upgrade', { status: 400 });
       }

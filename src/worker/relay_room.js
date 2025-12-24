@@ -21,7 +21,8 @@ export class RelayRoom {
 
   async fetch(request) {
     const url = new URL(request.url);
-    if (url.pathname !== '/ws') {
+    const wsPath = '/' + this.env.WS_PATH || '/ws';
+    if (url.pathname !== wsPath) {
       return new Response('Not found', { status: 404 });
     }
     if (request.headers.get('Upgrade') !== 'websocket') {
