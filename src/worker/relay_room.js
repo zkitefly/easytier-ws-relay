@@ -94,6 +94,12 @@ export class RelayRoom {
             handleRpcResp(ws, header, payload, this.types);
             break;
           }
+          // If toPeerId is not MY_PEER_ID, forward to the target peer
+          if (header.packetType !== PacketType.Data) {
+            console.log(`[ws] -> forward RpcResp type=${header.packetType} from=${header.fromPeerId} to=${header.toPeerId} len=${payload.length}`);
+          }
+          handleForwarding(ws, header, buffer, this.types);
+          break;
         case PacketType.Data:
         default:
           if (header.packetType !== PacketType.Data) {

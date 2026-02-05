@@ -1,3 +1,11 @@
+// 必须放在最前面！
+import Long from 'long';
+import * as protobuf from 'protobufjs/minimal';
+
+// 关键一步：告诉 protobufjs 使用 long.js
+protobuf.util.Long = Long;
+protobuf.configure();   // 这一行非常重要，会应用上面的 Long 配置
+
 import root from './protos_generated.js';
 
 let cachedTypes;

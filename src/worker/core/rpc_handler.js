@@ -3,6 +3,51 @@ import { createHeader } from './packet.js';
 import { getPeerManager } from './peer_manager.js';
 import { wrapPacket, randomU64String, sha256 } from './crypto.js';
 import { gzipMaybe, gunzipMaybe, isCompressionAvailable } from './compress.js';
+import { loadProtos } from './protos.js';
+
+// Helper to convert transactionId to proper format for protobuf int64
+function toLongForProto(value) {
+  if (value === null || value === undefined) return value;
+
+  // If it's already a Long-like object with low/high
+  if (value && typeof value === 'object' && typeof value.low === 'number' && typeof value.high === 'number') {
+    return value;
+  }
+
+  // If it's a Long instance
+  if (value && typeof value === 'object' && value.constructor && value.constructor.name === 'Long') {
+    return value;
+  }
+
+  // If it's a string, try to parse as BigInt first, then convert
+  if (typeof value === 'string') {
+    try {
+      const big = BigInt(value);
+      const low = Number(big & 0xffffffffn);
+      const high = Number((big >> 32n) & 0xffffffffn);
+      return { low, high, unsigned: false };
+    } catch (e) {
+      console.warn(`Failed to parse transactionId string as BigInt: ${value}`);
+      return value;
+    }
+  }
+
+  // If it's a number, convert to Long
+  if (typeof value === 'number') {
+    const low = value | 0;
+    const high = Math.floor(value / 4294967296);
+    return { low, high, unsigned: false };
+  }
+
+  // If it's a BigInt
+  if (typeof value === 'bigint') {
+    const low = Number(value & 0xffffffffn);
+    const high = Number((value >> 32n) & 0xffffffffn);
+    return { low, high, unsigned: false };
+  }
+
+  return value;
+}
 
 const peerCenterStateByGroup = new Map();
 const PEER_CENTER_TTL_MS = Number(process.env.EASYTIER_PEER_CENTER_TTL_MS || 180_000);
@@ -107,10 +152,40 @@ function sendRpcResponse(ws, toPeerId, reqRpcPacket, types, responseBodyBytes) {
   };
   const rpcResponseBytes = types.RpcResponse.encode(rpcResponsePayload).finish();
 
+  // Detailed transactionId logging to debug int64 encoding issues
+  const txId = reqRpcPacket.transactionId;
+  let txIdValue, txIdType;
+  if (txId && typeof txId === 'object' && txId.constructor && txId.constructor.name === 'Long') {
+    // Long object from protobufjs
+    txIdValue = txId.toString();
+    txIdType = 'Long';
+  } else if (typeof txId === 'bigint') {
+    txIdValue = txId.toString();
+    txIdType = 'BigInt';
+  } else if (typeof txId === 'string') {
+    txIdValue = txId;
+    txIdType = 'String';
+  } else if (typeof txId === 'number') {
+    txIdValue = String(txId);
+    txIdType = 'Number';
+  } else if (txId && typeof txId === 'object' && typeof txId.low === 'number' && typeof txId.high === 'number') {
+    // Plain Long-like object
+    const combined = (BigInt(txId.high) << 32n) | BigInt(txId.low >>> 0);
+    txIdValue = combined.toString();
+    txIdType = 'Long-like';
+  } else {
+    txIdValue = String(txId);
+    txIdType = typeof txId;
+  }
+  console.log(`sendRpcResponse: transactionId=${txIdValue} (${txIdType}) raw=${JSON.stringify(txId)}`);
+
+  // Convert transactionId to proper Long format for protobuf encoding
+  const txIdForEncoding = toLongForProto(txId);
+
   const rpcRespPacket = {
     fromPeer: MY_PEER_ID,
     toPeer: toPeerId,
-    transactionId: reqRpcPacket.transactionId,
+    transactionId: txIdForEncoding,
     descriptor: reqRpcPacket.descriptor,
     body: rpcResponseBytes,
     isRequest: false,
@@ -123,15 +198,49 @@ function sendRpcResponse(ws, toPeerId, reqRpcPacket, types, responseBodyBytes) {
   const buf = wrapPacket(createHeader, MY_PEER_ID, toPeerId, PacketType.RpcResp, rpcPacketBytes, ws);
   try {
     ws.send(buf);
-    console.log(`RpcResp -> to=${toPeerId} txLen=${buf.length} txTransaction=${reqRpcPacket.transactionId}`);
+    console.log(`RpcResp -> to=${toPeerId} txLen=${buf.length} txTransaction=${txIdValue} SUCCESS`);
   } catch (e) {
     console.error(`sendRpcResponse to ${toPeerId} failed: ${e.message}`);
+    // Re-throw to ensure caller knows the send failed
+    throw new Error(`Failed to send RPC response to ${toPeerId}: ${e.message}`);
   }
 }
 
 export function handleRpcReq(ws, header, payload, types) {
   try {
     const rpcPacket = types.RpcPacket.decode(payload);
+
+    // Log transactionId details for debugging int64 issues
+    const txId = rpcPacket.transactionId;
+    let txIdValue, txIdType, txIdDetails;
+    if (txId && typeof txId === 'object' && txId.constructor && txId.constructor.name === 'Long') {
+      txIdValue = txId.toString();
+      txIdType = 'Long';
+      txIdDetails = `low=${txId.low}, high=${txId.high}, unsigned=${txId.unsigned}`;
+    } else if (typeof txId === 'bigint') {
+      txIdValue = txId.toString();
+      txIdType = 'BigInt';
+      txIdDetails = '';
+    } else if (typeof txId === 'string') {
+      txIdValue = txId;
+      txIdType = 'String';
+      txIdDetails = '';
+    } else if (typeof txId === 'number') {
+      txIdValue = String(txId);
+      txIdType = 'Number';
+      txIdDetails = '';
+    } else if (txId && typeof txId === 'object' && typeof txId.low === 'number' && typeof txId.high === 'number') {
+      const combined = (BigInt(txId.high) << 32n) | BigInt(txId.low >>> 0);
+      txIdValue = combined.toString();
+      txIdType = 'Long-like';
+      txIdDetails = `low=${txId.low}, high=${txId.high}`;
+    } else {
+      txIdValue = String(txId);
+      txIdType = typeof txId;
+      txIdDetails = '';
+    }
+    console.log(`handleRpcReq: from=${header.fromPeerId} transactionId=${txIdValue} (${txIdType}) ${txIdDetails} raw=${JSON.stringify(txId)}`);
+
     if (rpcPacket.compressionInfo && rpcPacket.compressionInfo.algo > 1 && isCompressionAvailable()) {
       try {
         rpcPacket.body = gunzipMaybe(rpcPacket.body);
@@ -228,8 +337,39 @@ export function handleRpcReq(ws, header, payload, types) {
 
 export function handleRpcResp(ws, header, payload, types) {
   try {
-    console.log(`RpcResp <- from=${header.fromPeerId} to=${header.toPeerId} len=${payload.length}`);
+    console.log(`RpcResp <- from=${header.fromPeerId} to=${header.toPeerId} len=${payload.length} packetType=${header.packetType} forwardCounter=${header.forwardCounter}`);
     const rpcPacket = types.RpcPacket.decode(payload);
+
+    // Detailed logging for transactionId debugging
+    const txId = rpcPacket.transactionId;
+    let txIdValue, txIdType, txIdDetails;
+    if (txId && typeof txId === 'object' && txId.constructor && txId.constructor.name === 'Long') {
+      txIdValue = txId.toString();
+      txIdType = 'Long';
+      txIdDetails = `low=${txId.low}, high=${txId.high}, unsigned=${txId.unsigned}`;
+    } else if (typeof txId === 'bigint') {
+      txIdValue = txId.toString();
+      txIdType = 'BigInt';
+      txIdDetails = '';
+    } else if (typeof txId === 'string') {
+      txIdValue = txId;
+      txIdType = 'String';
+      txIdDetails = '';
+    } else if (typeof txId === 'number') {
+      txIdValue = String(txId);
+      txIdType = 'Number';
+      txIdDetails = '';
+    } else if (txId && typeof txId === 'object' && typeof txId.low === 'number' && typeof txId.high === 'number') {
+      const combined = (BigInt(txId.high) << 32n) | BigInt(txId.low >>> 0);
+      txIdValue = combined.toString();
+      txIdType = 'Long-like';
+      txIdDetails = `low=${txId.low}, high=${txId.high}`;
+    } else {
+      txIdValue = String(txId);
+      txIdType = typeof txId;
+      txIdDetails = '';
+    }
+    console.log(`handleRpcResp: transactionId=${txIdValue} (${txIdType}) ${txIdDetails} raw=${JSON.stringify(txId)}`);
     if (rpcPacket.compressionInfo && rpcPacket.compressionInfo.algo > 1 && isCompressionAvailable()) {
       try {
         rpcPacket.body = gunzipMaybe(rpcPacket.body);
@@ -316,12 +456,30 @@ function handleSyncRouteInfo(ws, fromPeerId, reqRpcPacket, syncReq, types) {
     console.warn(`Client sent COMPRESSED RPC body (Algo: ${reqRpcPacket.compressionInfo.algo}). We might have failed to decode it correctly if we didn't decompress.`);
   }
 
-  // Respond with SyncRouteInfoResponse
-  sendRpcResponse(ws, fromPeerId, reqRpcPacket, types, respBytes);
+  // Respond with SyncRouteInfoResponse - wrapped in try-catch to ensure response always sends
+  // This fixes the "sync_route_info failed timeout" error that prevents DO hibernation
+  try {
+    sendRpcResponse(ws, fromPeerId, reqRpcPacket, types, respBytes);
+    console.log(`Sent SyncRouteInfoResponse to peer ${fromPeerId}, transactionId=${reqRpcPacket.transactionId}`);
+  } catch (e) {
+    console.error(`CRITICAL: Failed to send SyncRouteInfoResponse to peer ${fromPeerId}: ${e.message}`);
+    // Don't rethrow - we want the RPC to complete even if pushRouteUpdateTo fails
+  }
 
   // After responding, push our current route info back to the requester (mirrors node behavior).
-  pm().pushRouteUpdateTo(fromPeerId, ws, types, { forceFull: true });
+  try {
+    pm().pushRouteUpdateTo(fromPeerId, ws, types, { forceFull: true });
+    console.log(`Successfully pushed route update to peer ${fromPeerId}`);
+  } catch (e) {
+    console.error(`Failed to push route update to peer ${fromPeerId}:`, e);
+  }
+
   if (hasNewPeers) {
-    pm().broadcastRouteUpdate(types, groupKey, fromPeerId, { forceFull: true });
+    try {
+      pm().broadcastRouteUpdate(types, groupKey, fromPeerId, { forceFull: true });
+      console.log(`Successfully broadcast route update for group ${groupKey}`);
+    } catch (e) {
+      console.error(`Failed to broadcast route update for group ${groupKey}:`, e);
+    }
   }
 }

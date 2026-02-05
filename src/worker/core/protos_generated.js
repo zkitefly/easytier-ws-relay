@@ -7,2100 +7,6 @@ const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.
 // Exported root namespace
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-export const error = $root.error = (() => {
-
-    /**
-     * Namespace error.
-     * @exports error
-     * @namespace
-     */
-    const error = {};
-
-    error.OtherError = (function() {
-
-        /**
-         * Properties of an OtherError.
-         * @memberof error
-         * @interface IOtherError
-         * @property {string|null} [errorMessage] OtherError errorMessage
-         */
-
-        /**
-         * Constructs a new OtherError.
-         * @memberof error
-         * @classdesc Represents an OtherError.
-         * @implements IOtherError
-         * @constructor
-         * @param {error.IOtherError=} [properties] Properties to set
-         */
-        function OtherError(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * OtherError errorMessage.
-         * @member {string} errorMessage
-         * @memberof error.OtherError
-         * @instance
-         */
-        OtherError.prototype.errorMessage = "";
-
-        /**
-         * Creates a new OtherError instance using the specified properties.
-         * @function create
-         * @memberof error.OtherError
-         * @static
-         * @param {error.IOtherError=} [properties] Properties to set
-         * @returns {error.OtherError} OtherError instance
-         */
-        OtherError.create = function create(properties) {
-            return new OtherError(properties);
-        };
-
-        /**
-         * Encodes the specified OtherError message. Does not implicitly {@link error.OtherError.verify|verify} messages.
-         * @function encode
-         * @memberof error.OtherError
-         * @static
-         * @param {error.IOtherError} message OtherError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        OtherError.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified OtherError message, length delimited. Does not implicitly {@link error.OtherError.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.OtherError
-         * @static
-         * @param {error.IOtherError} message OtherError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        OtherError.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an OtherError message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.OtherError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.OtherError} OtherError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        OtherError.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.OtherError();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.errorMessage = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an OtherError message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.OtherError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.OtherError} OtherError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        OtherError.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an OtherError message.
-         * @function verify
-         * @memberof error.OtherError
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        OtherError.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                if (!$util.isString(message.errorMessage))
-                    return "errorMessage: string expected";
-            return null;
-        };
-
-        /**
-         * Creates an OtherError message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.OtherError
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.OtherError} OtherError
-         */
-        OtherError.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.OtherError)
-                return object;
-            let message = new $root.error.OtherError();
-            if (object.errorMessage != null)
-                message.errorMessage = String(object.errorMessage);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an OtherError message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.OtherError
-         * @static
-         * @param {error.OtherError} message OtherError
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        OtherError.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.errorMessage = "";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                object.errorMessage = message.errorMessage;
-            return object;
-        };
-
-        /**
-         * Converts this OtherError to JSON.
-         * @function toJSON
-         * @memberof error.OtherError
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        OtherError.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for OtherError
-         * @function getTypeUrl
-         * @memberof error.OtherError
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        OtherError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.OtherError";
-        };
-
-        return OtherError;
-    })();
-
-    error.InvalidMethodIndex = (function() {
-
-        /**
-         * Properties of an InvalidMethodIndex.
-         * @memberof error
-         * @interface IInvalidMethodIndex
-         * @property {string|null} [serviceName] InvalidMethodIndex serviceName
-         * @property {number|null} [methodIndex] InvalidMethodIndex methodIndex
-         */
-
-        /**
-         * Constructs a new InvalidMethodIndex.
-         * @memberof error
-         * @classdesc Represents an InvalidMethodIndex.
-         * @implements IInvalidMethodIndex
-         * @constructor
-         * @param {error.IInvalidMethodIndex=} [properties] Properties to set
-         */
-        function InvalidMethodIndex(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * InvalidMethodIndex serviceName.
-         * @member {string} serviceName
-         * @memberof error.InvalidMethodIndex
-         * @instance
-         */
-        InvalidMethodIndex.prototype.serviceName = "";
-
-        /**
-         * InvalidMethodIndex methodIndex.
-         * @member {number} methodIndex
-         * @memberof error.InvalidMethodIndex
-         * @instance
-         */
-        InvalidMethodIndex.prototype.methodIndex = 0;
-
-        /**
-         * Creates a new InvalidMethodIndex instance using the specified properties.
-         * @function create
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {error.IInvalidMethodIndex=} [properties] Properties to set
-         * @returns {error.InvalidMethodIndex} InvalidMethodIndex instance
-         */
-        InvalidMethodIndex.create = function create(properties) {
-            return new InvalidMethodIndex(properties);
-        };
-
-        /**
-         * Encodes the specified InvalidMethodIndex message. Does not implicitly {@link error.InvalidMethodIndex.verify|verify} messages.
-         * @function encode
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {error.IInvalidMethodIndex} message InvalidMethodIndex message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        InvalidMethodIndex.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.serviceName != null && Object.hasOwnProperty.call(message, "serviceName"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.serviceName);
-            if (message.methodIndex != null && Object.hasOwnProperty.call(message, "methodIndex"))
-                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.methodIndex);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified InvalidMethodIndex message, length delimited. Does not implicitly {@link error.InvalidMethodIndex.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {error.IInvalidMethodIndex} message InvalidMethodIndex message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        InvalidMethodIndex.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an InvalidMethodIndex message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        InvalidMethodIndex.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.InvalidMethodIndex();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.serviceName = reader.string();
-                        break;
-                    }
-                case 2: {
-                        message.methodIndex = reader.uint32();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an InvalidMethodIndex message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        InvalidMethodIndex.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an InvalidMethodIndex message.
-         * @function verify
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        InvalidMethodIndex.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
-                if (!$util.isString(message.serviceName))
-                    return "serviceName: string expected";
-            if (message.methodIndex != null && message.hasOwnProperty("methodIndex"))
-                if (!$util.isInteger(message.methodIndex))
-                    return "methodIndex: integer expected";
-            return null;
-        };
-
-        /**
-         * Creates an InvalidMethodIndex message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
-         */
-        InvalidMethodIndex.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.InvalidMethodIndex)
-                return object;
-            let message = new $root.error.InvalidMethodIndex();
-            if (object.serviceName != null)
-                message.serviceName = String(object.serviceName);
-            if (object.methodIndex != null)
-                message.methodIndex = object.methodIndex >>> 0;
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an InvalidMethodIndex message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {error.InvalidMethodIndex} message InvalidMethodIndex
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        InvalidMethodIndex.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.serviceName = "";
-                object.methodIndex = 0;
-            }
-            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
-                object.serviceName = message.serviceName;
-            if (message.methodIndex != null && message.hasOwnProperty("methodIndex"))
-                object.methodIndex = message.methodIndex;
-            return object;
-        };
-
-        /**
-         * Converts this InvalidMethodIndex to JSON.
-         * @function toJSON
-         * @memberof error.InvalidMethodIndex
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        InvalidMethodIndex.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for InvalidMethodIndex
-         * @function getTypeUrl
-         * @memberof error.InvalidMethodIndex
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        InvalidMethodIndex.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.InvalidMethodIndex";
-        };
-
-        return InvalidMethodIndex;
-    })();
-
-    error.InvalidService = (function() {
-
-        /**
-         * Properties of an InvalidService.
-         * @memberof error
-         * @interface IInvalidService
-         * @property {string|null} [serviceName] InvalidService serviceName
-         */
-
-        /**
-         * Constructs a new InvalidService.
-         * @memberof error
-         * @classdesc Represents an InvalidService.
-         * @implements IInvalidService
-         * @constructor
-         * @param {error.IInvalidService=} [properties] Properties to set
-         */
-        function InvalidService(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * InvalidService serviceName.
-         * @member {string} serviceName
-         * @memberof error.InvalidService
-         * @instance
-         */
-        InvalidService.prototype.serviceName = "";
-
-        /**
-         * Creates a new InvalidService instance using the specified properties.
-         * @function create
-         * @memberof error.InvalidService
-         * @static
-         * @param {error.IInvalidService=} [properties] Properties to set
-         * @returns {error.InvalidService} InvalidService instance
-         */
-        InvalidService.create = function create(properties) {
-            return new InvalidService(properties);
-        };
-
-        /**
-         * Encodes the specified InvalidService message. Does not implicitly {@link error.InvalidService.verify|verify} messages.
-         * @function encode
-         * @memberof error.InvalidService
-         * @static
-         * @param {error.IInvalidService} message InvalidService message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        InvalidService.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.serviceName != null && Object.hasOwnProperty.call(message, "serviceName"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.serviceName);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified InvalidService message, length delimited. Does not implicitly {@link error.InvalidService.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.InvalidService
-         * @static
-         * @param {error.IInvalidService} message InvalidService message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        InvalidService.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an InvalidService message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.InvalidService
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.InvalidService} InvalidService
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        InvalidService.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.InvalidService();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.serviceName = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an InvalidService message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.InvalidService
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.InvalidService} InvalidService
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        InvalidService.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an InvalidService message.
-         * @function verify
-         * @memberof error.InvalidService
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        InvalidService.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
-                if (!$util.isString(message.serviceName))
-                    return "serviceName: string expected";
-            return null;
-        };
-
-        /**
-         * Creates an InvalidService message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.InvalidService
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.InvalidService} InvalidService
-         */
-        InvalidService.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.InvalidService)
-                return object;
-            let message = new $root.error.InvalidService();
-            if (object.serviceName != null)
-                message.serviceName = String(object.serviceName);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an InvalidService message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.InvalidService
-         * @static
-         * @param {error.InvalidService} message InvalidService
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        InvalidService.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.serviceName = "";
-            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
-                object.serviceName = message.serviceName;
-            return object;
-        };
-
-        /**
-         * Converts this InvalidService to JSON.
-         * @function toJSON
-         * @memberof error.InvalidService
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        InvalidService.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for InvalidService
-         * @function getTypeUrl
-         * @memberof error.InvalidService
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        InvalidService.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.InvalidService";
-        };
-
-        return InvalidService;
-    })();
-
-    error.ProstDecodeError = (function() {
-
-        /**
-         * Properties of a ProstDecodeError.
-         * @memberof error
-         * @interface IProstDecodeError
-         */
-
-        /**
-         * Constructs a new ProstDecodeError.
-         * @memberof error
-         * @classdesc Represents a ProstDecodeError.
-         * @implements IProstDecodeError
-         * @constructor
-         * @param {error.IProstDecodeError=} [properties] Properties to set
-         */
-        function ProstDecodeError(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Creates a new ProstDecodeError instance using the specified properties.
-         * @function create
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {error.IProstDecodeError=} [properties] Properties to set
-         * @returns {error.ProstDecodeError} ProstDecodeError instance
-         */
-        ProstDecodeError.create = function create(properties) {
-            return new ProstDecodeError(properties);
-        };
-
-        /**
-         * Encodes the specified ProstDecodeError message. Does not implicitly {@link error.ProstDecodeError.verify|verify} messages.
-         * @function encode
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {error.IProstDecodeError} message ProstDecodeError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProstDecodeError.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ProstDecodeError message, length delimited. Does not implicitly {@link error.ProstDecodeError.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {error.IProstDecodeError} message ProstDecodeError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProstDecodeError.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ProstDecodeError message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.ProstDecodeError} ProstDecodeError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProstDecodeError.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ProstDecodeError();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ProstDecodeError message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.ProstDecodeError} ProstDecodeError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProstDecodeError.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ProstDecodeError message.
-         * @function verify
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ProstDecodeError.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            return null;
-        };
-
-        /**
-         * Creates a ProstDecodeError message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.ProstDecodeError} ProstDecodeError
-         */
-        ProstDecodeError.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.ProstDecodeError)
-                return object;
-            return new $root.error.ProstDecodeError();
-        };
-
-        /**
-         * Creates a plain object from a ProstDecodeError message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {error.ProstDecodeError} message ProstDecodeError
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ProstDecodeError.toObject = function toObject() {
-            return {};
-        };
-
-        /**
-         * Converts this ProstDecodeError to JSON.
-         * @function toJSON
-         * @memberof error.ProstDecodeError
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ProstDecodeError.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ProstDecodeError
-         * @function getTypeUrl
-         * @memberof error.ProstDecodeError
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ProstDecodeError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.ProstDecodeError";
-        };
-
-        return ProstDecodeError;
-    })();
-
-    error.ProstEncodeError = (function() {
-
-        /**
-         * Properties of a ProstEncodeError.
-         * @memberof error
-         * @interface IProstEncodeError
-         */
-
-        /**
-         * Constructs a new ProstEncodeError.
-         * @memberof error
-         * @classdesc Represents a ProstEncodeError.
-         * @implements IProstEncodeError
-         * @constructor
-         * @param {error.IProstEncodeError=} [properties] Properties to set
-         */
-        function ProstEncodeError(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Creates a new ProstEncodeError instance using the specified properties.
-         * @function create
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {error.IProstEncodeError=} [properties] Properties to set
-         * @returns {error.ProstEncodeError} ProstEncodeError instance
-         */
-        ProstEncodeError.create = function create(properties) {
-            return new ProstEncodeError(properties);
-        };
-
-        /**
-         * Encodes the specified ProstEncodeError message. Does not implicitly {@link error.ProstEncodeError.verify|verify} messages.
-         * @function encode
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {error.IProstEncodeError} message ProstEncodeError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProstEncodeError.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ProstEncodeError message, length delimited. Does not implicitly {@link error.ProstEncodeError.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {error.IProstEncodeError} message ProstEncodeError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ProstEncodeError.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ProstEncodeError message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.ProstEncodeError} ProstEncodeError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProstEncodeError.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ProstEncodeError();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ProstEncodeError message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.ProstEncodeError} ProstEncodeError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ProstEncodeError.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ProstEncodeError message.
-         * @function verify
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ProstEncodeError.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            return null;
-        };
-
-        /**
-         * Creates a ProstEncodeError message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.ProstEncodeError} ProstEncodeError
-         */
-        ProstEncodeError.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.ProstEncodeError)
-                return object;
-            return new $root.error.ProstEncodeError();
-        };
-
-        /**
-         * Creates a plain object from a ProstEncodeError message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {error.ProstEncodeError} message ProstEncodeError
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ProstEncodeError.toObject = function toObject() {
-            return {};
-        };
-
-        /**
-         * Converts this ProstEncodeError to JSON.
-         * @function toJSON
-         * @memberof error.ProstEncodeError
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ProstEncodeError.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ProstEncodeError
-         * @function getTypeUrl
-         * @memberof error.ProstEncodeError
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ProstEncodeError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.ProstEncodeError";
-        };
-
-        return ProstEncodeError;
-    })();
-
-    error.ExecuteError = (function() {
-
-        /**
-         * Properties of an ExecuteError.
-         * @memberof error
-         * @interface IExecuteError
-         * @property {string|null} [errorMessage] ExecuteError errorMessage
-         */
-
-        /**
-         * Constructs a new ExecuteError.
-         * @memberof error
-         * @classdesc Represents an ExecuteError.
-         * @implements IExecuteError
-         * @constructor
-         * @param {error.IExecuteError=} [properties] Properties to set
-         */
-        function ExecuteError(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ExecuteError errorMessage.
-         * @member {string} errorMessage
-         * @memberof error.ExecuteError
-         * @instance
-         */
-        ExecuteError.prototype.errorMessage = "";
-
-        /**
-         * Creates a new ExecuteError instance using the specified properties.
-         * @function create
-         * @memberof error.ExecuteError
-         * @static
-         * @param {error.IExecuteError=} [properties] Properties to set
-         * @returns {error.ExecuteError} ExecuteError instance
-         */
-        ExecuteError.create = function create(properties) {
-            return new ExecuteError(properties);
-        };
-
-        /**
-         * Encodes the specified ExecuteError message. Does not implicitly {@link error.ExecuteError.verify|verify} messages.
-         * @function encode
-         * @memberof error.ExecuteError
-         * @static
-         * @param {error.IExecuteError} message ExecuteError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ExecuteError.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ExecuteError message, length delimited. Does not implicitly {@link error.ExecuteError.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.ExecuteError
-         * @static
-         * @param {error.IExecuteError} message ExecuteError message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ExecuteError.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an ExecuteError message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.ExecuteError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.ExecuteError} ExecuteError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ExecuteError.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ExecuteError();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.errorMessage = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an ExecuteError message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.ExecuteError
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.ExecuteError} ExecuteError
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ExecuteError.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an ExecuteError message.
-         * @function verify
-         * @memberof error.ExecuteError
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ExecuteError.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                if (!$util.isString(message.errorMessage))
-                    return "errorMessage: string expected";
-            return null;
-        };
-
-        /**
-         * Creates an ExecuteError message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.ExecuteError
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.ExecuteError} ExecuteError
-         */
-        ExecuteError.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.ExecuteError)
-                return object;
-            let message = new $root.error.ExecuteError();
-            if (object.errorMessage != null)
-                message.errorMessage = String(object.errorMessage);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an ExecuteError message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.ExecuteError
-         * @static
-         * @param {error.ExecuteError} message ExecuteError
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ExecuteError.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.errorMessage = "";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                object.errorMessage = message.errorMessage;
-            return object;
-        };
-
-        /**
-         * Converts this ExecuteError to JSON.
-         * @function toJSON
-         * @memberof error.ExecuteError
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ExecuteError.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for ExecuteError
-         * @function getTypeUrl
-         * @memberof error.ExecuteError
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        ExecuteError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.ExecuteError";
-        };
-
-        return ExecuteError;
-    })();
-
-    error.MalformatRpcPacket = (function() {
-
-        /**
-         * Properties of a MalformatRpcPacket.
-         * @memberof error
-         * @interface IMalformatRpcPacket
-         * @property {string|null} [errorMessage] MalformatRpcPacket errorMessage
-         */
-
-        /**
-         * Constructs a new MalformatRpcPacket.
-         * @memberof error
-         * @classdesc Represents a MalformatRpcPacket.
-         * @implements IMalformatRpcPacket
-         * @constructor
-         * @param {error.IMalformatRpcPacket=} [properties] Properties to set
-         */
-        function MalformatRpcPacket(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * MalformatRpcPacket errorMessage.
-         * @member {string} errorMessage
-         * @memberof error.MalformatRpcPacket
-         * @instance
-         */
-        MalformatRpcPacket.prototype.errorMessage = "";
-
-        /**
-         * Creates a new MalformatRpcPacket instance using the specified properties.
-         * @function create
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {error.IMalformatRpcPacket=} [properties] Properties to set
-         * @returns {error.MalformatRpcPacket} MalformatRpcPacket instance
-         */
-        MalformatRpcPacket.create = function create(properties) {
-            return new MalformatRpcPacket(properties);
-        };
-
-        /**
-         * Encodes the specified MalformatRpcPacket message. Does not implicitly {@link error.MalformatRpcPacket.verify|verify} messages.
-         * @function encode
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {error.IMalformatRpcPacket} message MalformatRpcPacket message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        MalformatRpcPacket.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified MalformatRpcPacket message, length delimited. Does not implicitly {@link error.MalformatRpcPacket.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {error.IMalformatRpcPacket} message MalformatRpcPacket message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        MalformatRpcPacket.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a MalformatRpcPacket message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        MalformatRpcPacket.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.MalformatRpcPacket();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.errorMessage = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a MalformatRpcPacket message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        MalformatRpcPacket.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a MalformatRpcPacket message.
-         * @function verify
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        MalformatRpcPacket.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                if (!$util.isString(message.errorMessage))
-                    return "errorMessage: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a MalformatRpcPacket message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
-         */
-        MalformatRpcPacket.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.MalformatRpcPacket)
-                return object;
-            let message = new $root.error.MalformatRpcPacket();
-            if (object.errorMessage != null)
-                message.errorMessage = String(object.errorMessage);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a MalformatRpcPacket message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {error.MalformatRpcPacket} message MalformatRpcPacket
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        MalformatRpcPacket.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.errorMessage = "";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                object.errorMessage = message.errorMessage;
-            return object;
-        };
-
-        /**
-         * Converts this MalformatRpcPacket to JSON.
-         * @function toJSON
-         * @memberof error.MalformatRpcPacket
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        MalformatRpcPacket.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for MalformatRpcPacket
-         * @function getTypeUrl
-         * @memberof error.MalformatRpcPacket
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        MalformatRpcPacket.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.MalformatRpcPacket";
-        };
-
-        return MalformatRpcPacket;
-    })();
-
-    error.Timeout = (function() {
-
-        /**
-         * Properties of a Timeout.
-         * @memberof error
-         * @interface ITimeout
-         * @property {string|null} [errorMessage] Timeout errorMessage
-         */
-
-        /**
-         * Constructs a new Timeout.
-         * @memberof error
-         * @classdesc Represents a Timeout.
-         * @implements ITimeout
-         * @constructor
-         * @param {error.ITimeout=} [properties] Properties to set
-         */
-        function Timeout(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Timeout errorMessage.
-         * @member {string} errorMessage
-         * @memberof error.Timeout
-         * @instance
-         */
-        Timeout.prototype.errorMessage = "";
-
-        /**
-         * Creates a new Timeout instance using the specified properties.
-         * @function create
-         * @memberof error.Timeout
-         * @static
-         * @param {error.ITimeout=} [properties] Properties to set
-         * @returns {error.Timeout} Timeout instance
-         */
-        Timeout.create = function create(properties) {
-            return new Timeout(properties);
-        };
-
-        /**
-         * Encodes the specified Timeout message. Does not implicitly {@link error.Timeout.verify|verify} messages.
-         * @function encode
-         * @memberof error.Timeout
-         * @static
-         * @param {error.ITimeout} message Timeout message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Timeout.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Timeout message, length delimited. Does not implicitly {@link error.Timeout.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.Timeout
-         * @static
-         * @param {error.ITimeout} message Timeout message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Timeout.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Timeout message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.Timeout
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.Timeout} Timeout
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Timeout.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.Timeout();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.errorMessage = reader.string();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a Timeout message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.Timeout
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.Timeout} Timeout
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Timeout.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Timeout message.
-         * @function verify
-         * @memberof error.Timeout
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Timeout.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                if (!$util.isString(message.errorMessage))
-                    return "errorMessage: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a Timeout message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.Timeout
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.Timeout} Timeout
-         */
-        Timeout.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.Timeout)
-                return object;
-            let message = new $root.error.Timeout();
-            if (object.errorMessage != null)
-                message.errorMessage = String(object.errorMessage);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Timeout message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.Timeout
-         * @static
-         * @param {error.Timeout} message Timeout
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Timeout.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.errorMessage = "";
-            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
-                object.errorMessage = message.errorMessage;
-            return object;
-        };
-
-        /**
-         * Converts this Timeout to JSON.
-         * @function toJSON
-         * @memberof error.Timeout
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Timeout.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for Timeout
-         * @function getTypeUrl
-         * @memberof error.Timeout
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        Timeout.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.Timeout";
-        };
-
-        return Timeout;
-    })();
-
-    error.Error = (function() {
-
-        /**
-         * Properties of an Error.
-         * @memberof error
-         * @interface IError
-         * @property {error.IOtherError|null} [otherError] Error otherError
-         * @property {error.IInvalidMethodIndex|null} [invalidMethodIndex] Error invalidMethodIndex
-         * @property {error.IInvalidService|null} [invalidService] Error invalidService
-         * @property {error.IProstDecodeError|null} [prostDecodeError] Error prostDecodeError
-         * @property {error.IProstEncodeError|null} [prostEncodeError] Error prostEncodeError
-         * @property {error.IExecuteError|null} [executeError] Error executeError
-         * @property {error.IMalformatRpcPacket|null} [malformatRpcPacket] Error malformatRpcPacket
-         * @property {error.ITimeout|null} [timeout] Error timeout
-         */
-
-        /**
-         * Constructs a new Error.
-         * @memberof error
-         * @classdesc Represents an Error.
-         * @implements IError
-         * @constructor
-         * @param {error.IError=} [properties] Properties to set
-         */
-        function Error(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Error otherError.
-         * @member {error.IOtherError|null|undefined} otherError
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.otherError = null;
-
-        /**
-         * Error invalidMethodIndex.
-         * @member {error.IInvalidMethodIndex|null|undefined} invalidMethodIndex
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.invalidMethodIndex = null;
-
-        /**
-         * Error invalidService.
-         * @member {error.IInvalidService|null|undefined} invalidService
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.invalidService = null;
-
-        /**
-         * Error prostDecodeError.
-         * @member {error.IProstDecodeError|null|undefined} prostDecodeError
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.prostDecodeError = null;
-
-        /**
-         * Error prostEncodeError.
-         * @member {error.IProstEncodeError|null|undefined} prostEncodeError
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.prostEncodeError = null;
-
-        /**
-         * Error executeError.
-         * @member {error.IExecuteError|null|undefined} executeError
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.executeError = null;
-
-        /**
-         * Error malformatRpcPacket.
-         * @member {error.IMalformatRpcPacket|null|undefined} malformatRpcPacket
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.malformatRpcPacket = null;
-
-        /**
-         * Error timeout.
-         * @member {error.ITimeout|null|undefined} timeout
-         * @memberof error.Error
-         * @instance
-         */
-        Error.prototype.timeout = null;
-
-        // OneOf field names bound to virtual getters and setters
-        let $oneOfFields;
-
-        /**
-         * Error errorKind.
-         * @member {"otherError"|"invalidMethodIndex"|"invalidService"|"prostDecodeError"|"prostEncodeError"|"executeError"|"malformatRpcPacket"|"timeout"|undefined} errorKind
-         * @memberof error.Error
-         * @instance
-         */
-        Object.defineProperty(Error.prototype, "errorKind", {
-            get: $util.oneOfGetter($oneOfFields = ["otherError", "invalidMethodIndex", "invalidService", "prostDecodeError", "prostEncodeError", "executeError", "malformatRpcPacket", "timeout"]),
-            set: $util.oneOfSetter($oneOfFields)
-        });
-
-        /**
-         * Creates a new Error instance using the specified properties.
-         * @function create
-         * @memberof error.Error
-         * @static
-         * @param {error.IError=} [properties] Properties to set
-         * @returns {error.Error} Error instance
-         */
-        Error.create = function create(properties) {
-            return new Error(properties);
-        };
-
-        /**
-         * Encodes the specified Error message. Does not implicitly {@link error.Error.verify|verify} messages.
-         * @function encode
-         * @memberof error.Error
-         * @static
-         * @param {error.IError} message Error message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Error.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.otherError != null && Object.hasOwnProperty.call(message, "otherError"))
-                $root.error.OtherError.encode(message.otherError, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.invalidMethodIndex != null && Object.hasOwnProperty.call(message, "invalidMethodIndex"))
-                $root.error.InvalidMethodIndex.encode(message.invalidMethodIndex, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.invalidService != null && Object.hasOwnProperty.call(message, "invalidService"))
-                $root.error.InvalidService.encode(message.invalidService, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.prostDecodeError != null && Object.hasOwnProperty.call(message, "prostDecodeError"))
-                $root.error.ProstDecodeError.encode(message.prostDecodeError, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            if (message.prostEncodeError != null && Object.hasOwnProperty.call(message, "prostEncodeError"))
-                $root.error.ProstEncodeError.encode(message.prostEncodeError, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.executeError != null && Object.hasOwnProperty.call(message, "executeError"))
-                $root.error.ExecuteError.encode(message.executeError, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-            if (message.malformatRpcPacket != null && Object.hasOwnProperty.call(message, "malformatRpcPacket"))
-                $root.error.MalformatRpcPacket.encode(message.malformatRpcPacket, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.timeout != null && Object.hasOwnProperty.call(message, "timeout"))
-                $root.error.Timeout.encode(message.timeout, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Error message, length delimited. Does not implicitly {@link error.Error.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof error.Error
-         * @static
-         * @param {error.IError} message Error message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Error.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an Error message from the specified reader or buffer.
-         * @function decode
-         * @memberof error.Error
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {error.Error} Error
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Error.decode = function decode(reader, length, error) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.Error();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                if (tag === error)
-                    break;
-                switch (tag >>> 3) {
-                case 1: {
-                        message.otherError = $root.error.OtherError.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 2: {
-                        message.invalidMethodIndex = $root.error.InvalidMethodIndex.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 3: {
-                        message.invalidService = $root.error.InvalidService.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 4: {
-                        message.prostDecodeError = $root.error.ProstDecodeError.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 5: {
-                        message.prostEncodeError = $root.error.ProstEncodeError.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 6: {
-                        message.executeError = $root.error.ExecuteError.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 7: {
-                        message.malformatRpcPacket = $root.error.MalformatRpcPacket.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 8: {
-                        message.timeout = $root.error.Timeout.decode(reader, reader.uint32());
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an Error message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof error.Error
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {error.Error} Error
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Error.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an Error message.
-         * @function verify
-         * @memberof error.Error
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Error.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            let properties = {};
-            if (message.otherError != null && message.hasOwnProperty("otherError")) {
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.OtherError.verify(message.otherError);
-                    if (error)
-                        return "otherError." + error;
-                }
-            }
-            if (message.invalidMethodIndex != null && message.hasOwnProperty("invalidMethodIndex")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.InvalidMethodIndex.verify(message.invalidMethodIndex);
-                    if (error)
-                        return "invalidMethodIndex." + error;
-                }
-            }
-            if (message.invalidService != null && message.hasOwnProperty("invalidService")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.InvalidService.verify(message.invalidService);
-                    if (error)
-                        return "invalidService." + error;
-                }
-            }
-            if (message.prostDecodeError != null && message.hasOwnProperty("prostDecodeError")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.ProstDecodeError.verify(message.prostDecodeError);
-                    if (error)
-                        return "prostDecodeError." + error;
-                }
-            }
-            if (message.prostEncodeError != null && message.hasOwnProperty("prostEncodeError")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.ProstEncodeError.verify(message.prostEncodeError);
-                    if (error)
-                        return "prostEncodeError." + error;
-                }
-            }
-            if (message.executeError != null && message.hasOwnProperty("executeError")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.ExecuteError.verify(message.executeError);
-                    if (error)
-                        return "executeError." + error;
-                }
-            }
-            if (message.malformatRpcPacket != null && message.hasOwnProperty("malformatRpcPacket")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.MalformatRpcPacket.verify(message.malformatRpcPacket);
-                    if (error)
-                        return "malformatRpcPacket." + error;
-                }
-            }
-            if (message.timeout != null && message.hasOwnProperty("timeout")) {
-                if (properties.errorKind === 1)
-                    return "errorKind: multiple values";
-                properties.errorKind = 1;
-                {
-                    let error = $root.error.Timeout.verify(message.timeout);
-                    if (error)
-                        return "timeout." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates an Error message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof error.Error
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {error.Error} Error
-         */
-        Error.fromObject = function fromObject(object) {
-            if (object instanceof $root.error.Error)
-                return object;
-            let message = new $root.error.Error();
-            if (object.otherError != null) {
-                if (typeof object.otherError !== "object")
-                    throw TypeError(".error.Error.otherError: object expected");
-                message.otherError = $root.error.OtherError.fromObject(object.otherError);
-            }
-            if (object.invalidMethodIndex != null) {
-                if (typeof object.invalidMethodIndex !== "object")
-                    throw TypeError(".error.Error.invalidMethodIndex: object expected");
-                message.invalidMethodIndex = $root.error.InvalidMethodIndex.fromObject(object.invalidMethodIndex);
-            }
-            if (object.invalidService != null) {
-                if (typeof object.invalidService !== "object")
-                    throw TypeError(".error.Error.invalidService: object expected");
-                message.invalidService = $root.error.InvalidService.fromObject(object.invalidService);
-            }
-            if (object.prostDecodeError != null) {
-                if (typeof object.prostDecodeError !== "object")
-                    throw TypeError(".error.Error.prostDecodeError: object expected");
-                message.prostDecodeError = $root.error.ProstDecodeError.fromObject(object.prostDecodeError);
-            }
-            if (object.prostEncodeError != null) {
-                if (typeof object.prostEncodeError !== "object")
-                    throw TypeError(".error.Error.prostEncodeError: object expected");
-                message.prostEncodeError = $root.error.ProstEncodeError.fromObject(object.prostEncodeError);
-            }
-            if (object.executeError != null) {
-                if (typeof object.executeError !== "object")
-                    throw TypeError(".error.Error.executeError: object expected");
-                message.executeError = $root.error.ExecuteError.fromObject(object.executeError);
-            }
-            if (object.malformatRpcPacket != null) {
-                if (typeof object.malformatRpcPacket !== "object")
-                    throw TypeError(".error.Error.malformatRpcPacket: object expected");
-                message.malformatRpcPacket = $root.error.MalformatRpcPacket.fromObject(object.malformatRpcPacket);
-            }
-            if (object.timeout != null) {
-                if (typeof object.timeout !== "object")
-                    throw TypeError(".error.Error.timeout: object expected");
-                message.timeout = $root.error.Timeout.fromObject(object.timeout);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an Error message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof error.Error
-         * @static
-         * @param {error.Error} message Error
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Error.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (message.otherError != null && message.hasOwnProperty("otherError")) {
-                object.otherError = $root.error.OtherError.toObject(message.otherError, options);
-                if (options.oneofs)
-                    object.errorKind = "otherError";
-            }
-            if (message.invalidMethodIndex != null && message.hasOwnProperty("invalidMethodIndex")) {
-                object.invalidMethodIndex = $root.error.InvalidMethodIndex.toObject(message.invalidMethodIndex, options);
-                if (options.oneofs)
-                    object.errorKind = "invalidMethodIndex";
-            }
-            if (message.invalidService != null && message.hasOwnProperty("invalidService")) {
-                object.invalidService = $root.error.InvalidService.toObject(message.invalidService, options);
-                if (options.oneofs)
-                    object.errorKind = "invalidService";
-            }
-            if (message.prostDecodeError != null && message.hasOwnProperty("prostDecodeError")) {
-                object.prostDecodeError = $root.error.ProstDecodeError.toObject(message.prostDecodeError, options);
-                if (options.oneofs)
-                    object.errorKind = "prostDecodeError";
-            }
-            if (message.prostEncodeError != null && message.hasOwnProperty("prostEncodeError")) {
-                object.prostEncodeError = $root.error.ProstEncodeError.toObject(message.prostEncodeError, options);
-                if (options.oneofs)
-                    object.errorKind = "prostEncodeError";
-            }
-            if (message.executeError != null && message.hasOwnProperty("executeError")) {
-                object.executeError = $root.error.ExecuteError.toObject(message.executeError, options);
-                if (options.oneofs)
-                    object.errorKind = "executeError";
-            }
-            if (message.malformatRpcPacket != null && message.hasOwnProperty("malformatRpcPacket")) {
-                object.malformatRpcPacket = $root.error.MalformatRpcPacket.toObject(message.malformatRpcPacket, options);
-                if (options.oneofs)
-                    object.errorKind = "malformatRpcPacket";
-            }
-            if (message.timeout != null && message.hasOwnProperty("timeout")) {
-                object.timeout = $root.error.Timeout.toObject(message.timeout, options);
-                if (options.oneofs)
-                    object.errorKind = "timeout";
-            }
-            return object;
-        };
-
-        /**
-         * Converts this Error to JSON.
-         * @function toJSON
-         * @memberof error.Error
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Error.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for Error
-         * @function getTypeUrl
-         * @memberof error.Error
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        Error.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/error.Error";
-        };
-
-        return Error;
-    })();
-
-    return error;
-})();
-
 export const common = $root.common = (() => {
 
     /**
@@ -2141,7 +47,7 @@ export const common = $root.common = (() => {
          * @property {boolean|null} [enableQuicProxy] FlagsInConfig enableQuicProxy
          * @property {boolean|null} [disableQuicInput] FlagsInConfig disableQuicInput
          * @property {number|null} [quicListenPort] FlagsInConfig quicListenPort
-         * @property {number|Long|null} [foreignRelayBpsLimit] FlagsInConfig foreignRelayBpsLimit
+         * @property {Long|null} [foreignRelayBpsLimit] FlagsInConfig foreignRelayBpsLimit
          * @property {number|null} [multiThreadCount] FlagsInConfig multiThreadCount
          * @property {boolean|null} [enableRelayForeignNetworkKcp] FlagsInConfig enableRelayForeignNetworkKcp
          * @property {string|null} [encryptionAlgorithm] FlagsInConfig encryptionAlgorithm
@@ -2366,7 +272,7 @@ export const common = $root.common = (() => {
 
         /**
          * FlagsInConfig foreignRelayBpsLimit.
-         * @member {number|Long} foreignRelayBpsLimit
+         * @member {Long} foreignRelayBpsLimit
          * @memberof common.FlagsInConfig
          * @instance
          */
@@ -3593,7 +1499,7 @@ export const common = $root.common = (() => {
          * @interface IRpcResponse
          * @property {Uint8Array|null} [response] RpcResponse response
          * @property {error.IError|null} [error] RpcResponse error
-         * @property {number|Long|null} [runtimeUs] RpcResponse runtimeUs
+         * @property {Long|null} [runtimeUs] RpcResponse runtimeUs
          */
 
         /**
@@ -3629,7 +1535,7 @@ export const common = $root.common = (() => {
 
         /**
          * RpcResponse runtimeUs.
-         * @member {number|Long} runtimeUs
+         * @member {Long} runtimeUs
          * @memberof common.RpcResponse
          * @instance
          */
@@ -4166,7 +2072,7 @@ export const common = $root.common = (() => {
          * @interface IRpcPacket
          * @property {number|null} [fromPeer] RpcPacket fromPeer
          * @property {number|null} [toPeer] RpcPacket toPeer
-         * @property {number|Long|null} [transactionId] RpcPacket transactionId
+         * @property {Long|null} [transactionId] RpcPacket transactionId
          * @property {common.IRpcDescriptor|null} [descriptor] RpcPacket descriptor
          * @property {Uint8Array|null} [body] RpcPacket body
          * @property {boolean|null} [isRequest] RpcPacket isRequest
@@ -4209,7 +2115,7 @@ export const common = $root.common = (() => {
 
         /**
          * RpcPacket transactionId.
-         * @member {number|Long} transactionId
+         * @member {Long} transactionId
          * @memberof common.RpcPacket
          * @instance
          */
@@ -7325,7 +5231,7 @@ export const common = $root.common = (() => {
          * @interface IStunInfo
          * @property {common.NatType|null} [udpNatType] StunInfo udpNatType
          * @property {common.NatType|null} [tcpNatType] StunInfo tcpNatType
-         * @property {number|Long|null} [lastUpdateTime] StunInfo lastUpdateTime
+         * @property {Long|null} [lastUpdateTime] StunInfo lastUpdateTime
          * @property {Array.<string>|null} [publicIp] StunInfo publicIp
          * @property {number|null} [minPort] StunInfo minPort
          * @property {number|null} [maxPort] StunInfo maxPort
@@ -7365,7 +5271,7 @@ export const common = $root.common = (() => {
 
         /**
          * StunInfo lastUpdateTime.
-         * @member {number|Long} lastUpdateTime
+         * @member {Long} lastUpdateTime
          * @memberof common.StunInfo
          * @instance
          */
@@ -8573,9 +6479,9 @@ export const common = $root.common = (() => {
          * Properties of a LimiterConfig.
          * @memberof common
          * @interface ILimiterConfig
-         * @property {number|Long|null} [burstRate] LimiterConfig burstRate
-         * @property {number|Long|null} [bps] LimiterConfig bps
-         * @property {number|Long|null} [fillDurationMs] LimiterConfig fillDurationMs
+         * @property {Long|null} [burstRate] LimiterConfig burstRate
+         * @property {Long|null} [bps] LimiterConfig bps
+         * @property {Long|null} [fillDurationMs] LimiterConfig fillDurationMs
          */
 
         /**
@@ -8595,7 +6501,7 @@ export const common = $root.common = (() => {
 
         /**
          * LimiterConfig burstRate.
-         * @member {number|Long|null|undefined} burstRate
+         * @member {Long|null|undefined} burstRate
          * @memberof common.LimiterConfig
          * @instance
          */
@@ -8603,7 +6509,7 @@ export const common = $root.common = (() => {
 
         /**
          * LimiterConfig bps.
-         * @member {number|Long|null|undefined} bps
+         * @member {Long|null|undefined} bps
          * @memberof common.LimiterConfig
          * @instance
          */
@@ -8611,7 +6517,7 @@ export const common = $root.common = (() => {
 
         /**
          * LimiterConfig fillDurationMs.
-         * @member {number|Long|null|undefined} fillDurationMs
+         * @member {Long|null|undefined} fillDurationMs
          * @memberof common.LimiterConfig
          * @instance
          */
@@ -8884,6 +6790,2100 @@ export const common = $root.common = (() => {
     return common;
 })();
 
+export const error = $root.error = (() => {
+
+    /**
+     * Namespace error.
+     * @exports error
+     * @namespace
+     */
+    const error = {};
+
+    error.OtherError = (function() {
+
+        /**
+         * Properties of an OtherError.
+         * @memberof error
+         * @interface IOtherError
+         * @property {string|null} [errorMessage] OtherError errorMessage
+         */
+
+        /**
+         * Constructs a new OtherError.
+         * @memberof error
+         * @classdesc Represents an OtherError.
+         * @implements IOtherError
+         * @constructor
+         * @param {error.IOtherError=} [properties] Properties to set
+         */
+        function OtherError(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * OtherError errorMessage.
+         * @member {string} errorMessage
+         * @memberof error.OtherError
+         * @instance
+         */
+        OtherError.prototype.errorMessage = "";
+
+        /**
+         * Creates a new OtherError instance using the specified properties.
+         * @function create
+         * @memberof error.OtherError
+         * @static
+         * @param {error.IOtherError=} [properties] Properties to set
+         * @returns {error.OtherError} OtherError instance
+         */
+        OtherError.create = function create(properties) {
+            return new OtherError(properties);
+        };
+
+        /**
+         * Encodes the specified OtherError message. Does not implicitly {@link error.OtherError.verify|verify} messages.
+         * @function encode
+         * @memberof error.OtherError
+         * @static
+         * @param {error.IOtherError} message OtherError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        OtherError.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified OtherError message, length delimited. Does not implicitly {@link error.OtherError.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.OtherError
+         * @static
+         * @param {error.IOtherError} message OtherError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        OtherError.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an OtherError message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.OtherError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.OtherError} OtherError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        OtherError.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.OtherError();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an OtherError message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.OtherError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.OtherError} OtherError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        OtherError.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an OtherError message.
+         * @function verify
+         * @memberof error.OtherError
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        OtherError.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an OtherError message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.OtherError
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.OtherError} OtherError
+         */
+        OtherError.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.OtherError)
+                return object;
+            let message = new $root.error.OtherError();
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an OtherError message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.OtherError
+         * @static
+         * @param {error.OtherError} message OtherError
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        OtherError.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.errorMessage = "";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            return object;
+        };
+
+        /**
+         * Converts this OtherError to JSON.
+         * @function toJSON
+         * @memberof error.OtherError
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        OtherError.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for OtherError
+         * @function getTypeUrl
+         * @memberof error.OtherError
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        OtherError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.OtherError";
+        };
+
+        return OtherError;
+    })();
+
+    error.InvalidMethodIndex = (function() {
+
+        /**
+         * Properties of an InvalidMethodIndex.
+         * @memberof error
+         * @interface IInvalidMethodIndex
+         * @property {string|null} [serviceName] InvalidMethodIndex serviceName
+         * @property {number|null} [methodIndex] InvalidMethodIndex methodIndex
+         */
+
+        /**
+         * Constructs a new InvalidMethodIndex.
+         * @memberof error
+         * @classdesc Represents an InvalidMethodIndex.
+         * @implements IInvalidMethodIndex
+         * @constructor
+         * @param {error.IInvalidMethodIndex=} [properties] Properties to set
+         */
+        function InvalidMethodIndex(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * InvalidMethodIndex serviceName.
+         * @member {string} serviceName
+         * @memberof error.InvalidMethodIndex
+         * @instance
+         */
+        InvalidMethodIndex.prototype.serviceName = "";
+
+        /**
+         * InvalidMethodIndex methodIndex.
+         * @member {number} methodIndex
+         * @memberof error.InvalidMethodIndex
+         * @instance
+         */
+        InvalidMethodIndex.prototype.methodIndex = 0;
+
+        /**
+         * Creates a new InvalidMethodIndex instance using the specified properties.
+         * @function create
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {error.IInvalidMethodIndex=} [properties] Properties to set
+         * @returns {error.InvalidMethodIndex} InvalidMethodIndex instance
+         */
+        InvalidMethodIndex.create = function create(properties) {
+            return new InvalidMethodIndex(properties);
+        };
+
+        /**
+         * Encodes the specified InvalidMethodIndex message. Does not implicitly {@link error.InvalidMethodIndex.verify|verify} messages.
+         * @function encode
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {error.IInvalidMethodIndex} message InvalidMethodIndex message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        InvalidMethodIndex.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.serviceName != null && Object.hasOwnProperty.call(message, "serviceName"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.serviceName);
+            if (message.methodIndex != null && Object.hasOwnProperty.call(message, "methodIndex"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.methodIndex);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified InvalidMethodIndex message, length delimited. Does not implicitly {@link error.InvalidMethodIndex.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {error.IInvalidMethodIndex} message InvalidMethodIndex message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        InvalidMethodIndex.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an InvalidMethodIndex message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        InvalidMethodIndex.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.InvalidMethodIndex();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.serviceName = reader.string();
+                        break;
+                    }
+                case 2: {
+                        message.methodIndex = reader.uint32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an InvalidMethodIndex message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        InvalidMethodIndex.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an InvalidMethodIndex message.
+         * @function verify
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        InvalidMethodIndex.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
+                if (!$util.isString(message.serviceName))
+                    return "serviceName: string expected";
+            if (message.methodIndex != null && message.hasOwnProperty("methodIndex"))
+                if (!$util.isInteger(message.methodIndex))
+                    return "methodIndex: integer expected";
+            return null;
+        };
+
+        /**
+         * Creates an InvalidMethodIndex message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.InvalidMethodIndex} InvalidMethodIndex
+         */
+        InvalidMethodIndex.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.InvalidMethodIndex)
+                return object;
+            let message = new $root.error.InvalidMethodIndex();
+            if (object.serviceName != null)
+                message.serviceName = String(object.serviceName);
+            if (object.methodIndex != null)
+                message.methodIndex = object.methodIndex >>> 0;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an InvalidMethodIndex message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {error.InvalidMethodIndex} message InvalidMethodIndex
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        InvalidMethodIndex.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.serviceName = "";
+                object.methodIndex = 0;
+            }
+            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
+                object.serviceName = message.serviceName;
+            if (message.methodIndex != null && message.hasOwnProperty("methodIndex"))
+                object.methodIndex = message.methodIndex;
+            return object;
+        };
+
+        /**
+         * Converts this InvalidMethodIndex to JSON.
+         * @function toJSON
+         * @memberof error.InvalidMethodIndex
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        InvalidMethodIndex.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for InvalidMethodIndex
+         * @function getTypeUrl
+         * @memberof error.InvalidMethodIndex
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        InvalidMethodIndex.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.InvalidMethodIndex";
+        };
+
+        return InvalidMethodIndex;
+    })();
+
+    error.InvalidService = (function() {
+
+        /**
+         * Properties of an InvalidService.
+         * @memberof error
+         * @interface IInvalidService
+         * @property {string|null} [serviceName] InvalidService serviceName
+         */
+
+        /**
+         * Constructs a new InvalidService.
+         * @memberof error
+         * @classdesc Represents an InvalidService.
+         * @implements IInvalidService
+         * @constructor
+         * @param {error.IInvalidService=} [properties] Properties to set
+         */
+        function InvalidService(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * InvalidService serviceName.
+         * @member {string} serviceName
+         * @memberof error.InvalidService
+         * @instance
+         */
+        InvalidService.prototype.serviceName = "";
+
+        /**
+         * Creates a new InvalidService instance using the specified properties.
+         * @function create
+         * @memberof error.InvalidService
+         * @static
+         * @param {error.IInvalidService=} [properties] Properties to set
+         * @returns {error.InvalidService} InvalidService instance
+         */
+        InvalidService.create = function create(properties) {
+            return new InvalidService(properties);
+        };
+
+        /**
+         * Encodes the specified InvalidService message. Does not implicitly {@link error.InvalidService.verify|verify} messages.
+         * @function encode
+         * @memberof error.InvalidService
+         * @static
+         * @param {error.IInvalidService} message InvalidService message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        InvalidService.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.serviceName != null && Object.hasOwnProperty.call(message, "serviceName"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.serviceName);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified InvalidService message, length delimited. Does not implicitly {@link error.InvalidService.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.InvalidService
+         * @static
+         * @param {error.IInvalidService} message InvalidService message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        InvalidService.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an InvalidService message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.InvalidService
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.InvalidService} InvalidService
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        InvalidService.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.InvalidService();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.serviceName = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an InvalidService message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.InvalidService
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.InvalidService} InvalidService
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        InvalidService.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an InvalidService message.
+         * @function verify
+         * @memberof error.InvalidService
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        InvalidService.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
+                if (!$util.isString(message.serviceName))
+                    return "serviceName: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an InvalidService message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.InvalidService
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.InvalidService} InvalidService
+         */
+        InvalidService.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.InvalidService)
+                return object;
+            let message = new $root.error.InvalidService();
+            if (object.serviceName != null)
+                message.serviceName = String(object.serviceName);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an InvalidService message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.InvalidService
+         * @static
+         * @param {error.InvalidService} message InvalidService
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        InvalidService.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.serviceName = "";
+            if (message.serviceName != null && message.hasOwnProperty("serviceName"))
+                object.serviceName = message.serviceName;
+            return object;
+        };
+
+        /**
+         * Converts this InvalidService to JSON.
+         * @function toJSON
+         * @memberof error.InvalidService
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        InvalidService.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for InvalidService
+         * @function getTypeUrl
+         * @memberof error.InvalidService
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        InvalidService.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.InvalidService";
+        };
+
+        return InvalidService;
+    })();
+
+    error.ProstDecodeError = (function() {
+
+        /**
+         * Properties of a ProstDecodeError.
+         * @memberof error
+         * @interface IProstDecodeError
+         */
+
+        /**
+         * Constructs a new ProstDecodeError.
+         * @memberof error
+         * @classdesc Represents a ProstDecodeError.
+         * @implements IProstDecodeError
+         * @constructor
+         * @param {error.IProstDecodeError=} [properties] Properties to set
+         */
+        function ProstDecodeError(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new ProstDecodeError instance using the specified properties.
+         * @function create
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {error.IProstDecodeError=} [properties] Properties to set
+         * @returns {error.ProstDecodeError} ProstDecodeError instance
+         */
+        ProstDecodeError.create = function create(properties) {
+            return new ProstDecodeError(properties);
+        };
+
+        /**
+         * Encodes the specified ProstDecodeError message. Does not implicitly {@link error.ProstDecodeError.verify|verify} messages.
+         * @function encode
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {error.IProstDecodeError} message ProstDecodeError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProstDecodeError.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ProstDecodeError message, length delimited. Does not implicitly {@link error.ProstDecodeError.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {error.IProstDecodeError} message ProstDecodeError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProstDecodeError.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ProstDecodeError message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.ProstDecodeError} ProstDecodeError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProstDecodeError.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ProstDecodeError();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ProstDecodeError message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.ProstDecodeError} ProstDecodeError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProstDecodeError.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ProstDecodeError message.
+         * @function verify
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ProstDecodeError.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a ProstDecodeError message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.ProstDecodeError} ProstDecodeError
+         */
+        ProstDecodeError.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.ProstDecodeError)
+                return object;
+            return new $root.error.ProstDecodeError();
+        };
+
+        /**
+         * Creates a plain object from a ProstDecodeError message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {error.ProstDecodeError} message ProstDecodeError
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ProstDecodeError.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this ProstDecodeError to JSON.
+         * @function toJSON
+         * @memberof error.ProstDecodeError
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ProstDecodeError.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ProstDecodeError
+         * @function getTypeUrl
+         * @memberof error.ProstDecodeError
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ProstDecodeError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.ProstDecodeError";
+        };
+
+        return ProstDecodeError;
+    })();
+
+    error.ProstEncodeError = (function() {
+
+        /**
+         * Properties of a ProstEncodeError.
+         * @memberof error
+         * @interface IProstEncodeError
+         */
+
+        /**
+         * Constructs a new ProstEncodeError.
+         * @memberof error
+         * @classdesc Represents a ProstEncodeError.
+         * @implements IProstEncodeError
+         * @constructor
+         * @param {error.IProstEncodeError=} [properties] Properties to set
+         */
+        function ProstEncodeError(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new ProstEncodeError instance using the specified properties.
+         * @function create
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {error.IProstEncodeError=} [properties] Properties to set
+         * @returns {error.ProstEncodeError} ProstEncodeError instance
+         */
+        ProstEncodeError.create = function create(properties) {
+            return new ProstEncodeError(properties);
+        };
+
+        /**
+         * Encodes the specified ProstEncodeError message. Does not implicitly {@link error.ProstEncodeError.verify|verify} messages.
+         * @function encode
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {error.IProstEncodeError} message ProstEncodeError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProstEncodeError.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ProstEncodeError message, length delimited. Does not implicitly {@link error.ProstEncodeError.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {error.IProstEncodeError} message ProstEncodeError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ProstEncodeError.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ProstEncodeError message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.ProstEncodeError} ProstEncodeError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProstEncodeError.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ProstEncodeError();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ProstEncodeError message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.ProstEncodeError} ProstEncodeError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ProstEncodeError.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ProstEncodeError message.
+         * @function verify
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ProstEncodeError.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a ProstEncodeError message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.ProstEncodeError} ProstEncodeError
+         */
+        ProstEncodeError.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.ProstEncodeError)
+                return object;
+            return new $root.error.ProstEncodeError();
+        };
+
+        /**
+         * Creates a plain object from a ProstEncodeError message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {error.ProstEncodeError} message ProstEncodeError
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ProstEncodeError.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this ProstEncodeError to JSON.
+         * @function toJSON
+         * @memberof error.ProstEncodeError
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ProstEncodeError.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ProstEncodeError
+         * @function getTypeUrl
+         * @memberof error.ProstEncodeError
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ProstEncodeError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.ProstEncodeError";
+        };
+
+        return ProstEncodeError;
+    })();
+
+    error.ExecuteError = (function() {
+
+        /**
+         * Properties of an ExecuteError.
+         * @memberof error
+         * @interface IExecuteError
+         * @property {string|null} [errorMessage] ExecuteError errorMessage
+         */
+
+        /**
+         * Constructs a new ExecuteError.
+         * @memberof error
+         * @classdesc Represents an ExecuteError.
+         * @implements IExecuteError
+         * @constructor
+         * @param {error.IExecuteError=} [properties] Properties to set
+         */
+        function ExecuteError(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ExecuteError errorMessage.
+         * @member {string} errorMessage
+         * @memberof error.ExecuteError
+         * @instance
+         */
+        ExecuteError.prototype.errorMessage = "";
+
+        /**
+         * Creates a new ExecuteError instance using the specified properties.
+         * @function create
+         * @memberof error.ExecuteError
+         * @static
+         * @param {error.IExecuteError=} [properties] Properties to set
+         * @returns {error.ExecuteError} ExecuteError instance
+         */
+        ExecuteError.create = function create(properties) {
+            return new ExecuteError(properties);
+        };
+
+        /**
+         * Encodes the specified ExecuteError message. Does not implicitly {@link error.ExecuteError.verify|verify} messages.
+         * @function encode
+         * @memberof error.ExecuteError
+         * @static
+         * @param {error.IExecuteError} message ExecuteError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ExecuteError.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ExecuteError message, length delimited. Does not implicitly {@link error.ExecuteError.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.ExecuteError
+         * @static
+         * @param {error.IExecuteError} message ExecuteError message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ExecuteError.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an ExecuteError message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.ExecuteError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.ExecuteError} ExecuteError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ExecuteError.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.ExecuteError();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an ExecuteError message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.ExecuteError
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.ExecuteError} ExecuteError
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ExecuteError.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an ExecuteError message.
+         * @function verify
+         * @memberof error.ExecuteError
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ExecuteError.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an ExecuteError message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.ExecuteError
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.ExecuteError} ExecuteError
+         */
+        ExecuteError.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.ExecuteError)
+                return object;
+            let message = new $root.error.ExecuteError();
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an ExecuteError message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.ExecuteError
+         * @static
+         * @param {error.ExecuteError} message ExecuteError
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ExecuteError.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.errorMessage = "";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            return object;
+        };
+
+        /**
+         * Converts this ExecuteError to JSON.
+         * @function toJSON
+         * @memberof error.ExecuteError
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ExecuteError.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ExecuteError
+         * @function getTypeUrl
+         * @memberof error.ExecuteError
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ExecuteError.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.ExecuteError";
+        };
+
+        return ExecuteError;
+    })();
+
+    error.MalformatRpcPacket = (function() {
+
+        /**
+         * Properties of a MalformatRpcPacket.
+         * @memberof error
+         * @interface IMalformatRpcPacket
+         * @property {string|null} [errorMessage] MalformatRpcPacket errorMessage
+         */
+
+        /**
+         * Constructs a new MalformatRpcPacket.
+         * @memberof error
+         * @classdesc Represents a MalformatRpcPacket.
+         * @implements IMalformatRpcPacket
+         * @constructor
+         * @param {error.IMalformatRpcPacket=} [properties] Properties to set
+         */
+        function MalformatRpcPacket(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * MalformatRpcPacket errorMessage.
+         * @member {string} errorMessage
+         * @memberof error.MalformatRpcPacket
+         * @instance
+         */
+        MalformatRpcPacket.prototype.errorMessage = "";
+
+        /**
+         * Creates a new MalformatRpcPacket instance using the specified properties.
+         * @function create
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {error.IMalformatRpcPacket=} [properties] Properties to set
+         * @returns {error.MalformatRpcPacket} MalformatRpcPacket instance
+         */
+        MalformatRpcPacket.create = function create(properties) {
+            return new MalformatRpcPacket(properties);
+        };
+
+        /**
+         * Encodes the specified MalformatRpcPacket message. Does not implicitly {@link error.MalformatRpcPacket.verify|verify} messages.
+         * @function encode
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {error.IMalformatRpcPacket} message MalformatRpcPacket message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        MalformatRpcPacket.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified MalformatRpcPacket message, length delimited. Does not implicitly {@link error.MalformatRpcPacket.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {error.IMalformatRpcPacket} message MalformatRpcPacket message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        MalformatRpcPacket.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a MalformatRpcPacket message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        MalformatRpcPacket.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.MalformatRpcPacket();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a MalformatRpcPacket message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        MalformatRpcPacket.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a MalformatRpcPacket message.
+         * @function verify
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        MalformatRpcPacket.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a MalformatRpcPacket message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.MalformatRpcPacket} MalformatRpcPacket
+         */
+        MalformatRpcPacket.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.MalformatRpcPacket)
+                return object;
+            let message = new $root.error.MalformatRpcPacket();
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a MalformatRpcPacket message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {error.MalformatRpcPacket} message MalformatRpcPacket
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        MalformatRpcPacket.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.errorMessage = "";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            return object;
+        };
+
+        /**
+         * Converts this MalformatRpcPacket to JSON.
+         * @function toJSON
+         * @memberof error.MalformatRpcPacket
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        MalformatRpcPacket.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for MalformatRpcPacket
+         * @function getTypeUrl
+         * @memberof error.MalformatRpcPacket
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        MalformatRpcPacket.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.MalformatRpcPacket";
+        };
+
+        return MalformatRpcPacket;
+    })();
+
+    error.Timeout = (function() {
+
+        /**
+         * Properties of a Timeout.
+         * @memberof error
+         * @interface ITimeout
+         * @property {string|null} [errorMessage] Timeout errorMessage
+         */
+
+        /**
+         * Constructs a new Timeout.
+         * @memberof error
+         * @classdesc Represents a Timeout.
+         * @implements ITimeout
+         * @constructor
+         * @param {error.ITimeout=} [properties] Properties to set
+         */
+        function Timeout(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Timeout errorMessage.
+         * @member {string} errorMessage
+         * @memberof error.Timeout
+         * @instance
+         */
+        Timeout.prototype.errorMessage = "";
+
+        /**
+         * Creates a new Timeout instance using the specified properties.
+         * @function create
+         * @memberof error.Timeout
+         * @static
+         * @param {error.ITimeout=} [properties] Properties to set
+         * @returns {error.Timeout} Timeout instance
+         */
+        Timeout.create = function create(properties) {
+            return new Timeout(properties);
+        };
+
+        /**
+         * Encodes the specified Timeout message. Does not implicitly {@link error.Timeout.verify|verify} messages.
+         * @function encode
+         * @memberof error.Timeout
+         * @static
+         * @param {error.ITimeout} message Timeout message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Timeout.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.errorMessage != null && Object.hasOwnProperty.call(message, "errorMessage"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.errorMessage);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Timeout message, length delimited. Does not implicitly {@link error.Timeout.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.Timeout
+         * @static
+         * @param {error.ITimeout} message Timeout message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Timeout.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Timeout message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.Timeout
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.Timeout} Timeout
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Timeout.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.Timeout();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.errorMessage = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Timeout message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.Timeout
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.Timeout} Timeout
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Timeout.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Timeout message.
+         * @function verify
+         * @memberof error.Timeout
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Timeout.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                if (!$util.isString(message.errorMessage))
+                    return "errorMessage: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a Timeout message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.Timeout
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.Timeout} Timeout
+         */
+        Timeout.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.Timeout)
+                return object;
+            let message = new $root.error.Timeout();
+            if (object.errorMessage != null)
+                message.errorMessage = String(object.errorMessage);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a Timeout message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.Timeout
+         * @static
+         * @param {error.Timeout} message Timeout
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Timeout.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.errorMessage = "";
+            if (message.errorMessage != null && message.hasOwnProperty("errorMessage"))
+                object.errorMessage = message.errorMessage;
+            return object;
+        };
+
+        /**
+         * Converts this Timeout to JSON.
+         * @function toJSON
+         * @memberof error.Timeout
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Timeout.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Timeout
+         * @function getTypeUrl
+         * @memberof error.Timeout
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Timeout.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.Timeout";
+        };
+
+        return Timeout;
+    })();
+
+    error.Error = (function() {
+
+        /**
+         * Properties of an Error.
+         * @memberof error
+         * @interface IError
+         * @property {error.IOtherError|null} [otherError] Error otherError
+         * @property {error.IInvalidMethodIndex|null} [invalidMethodIndex] Error invalidMethodIndex
+         * @property {error.IInvalidService|null} [invalidService] Error invalidService
+         * @property {error.IProstDecodeError|null} [prostDecodeError] Error prostDecodeError
+         * @property {error.IProstEncodeError|null} [prostEncodeError] Error prostEncodeError
+         * @property {error.IExecuteError|null} [executeError] Error executeError
+         * @property {error.IMalformatRpcPacket|null} [malformatRpcPacket] Error malformatRpcPacket
+         * @property {error.ITimeout|null} [timeout] Error timeout
+         */
+
+        /**
+         * Constructs a new Error.
+         * @memberof error
+         * @classdesc Represents an Error.
+         * @implements IError
+         * @constructor
+         * @param {error.IError=} [properties] Properties to set
+         */
+        function Error(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Error otherError.
+         * @member {error.IOtherError|null|undefined} otherError
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.otherError = null;
+
+        /**
+         * Error invalidMethodIndex.
+         * @member {error.IInvalidMethodIndex|null|undefined} invalidMethodIndex
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.invalidMethodIndex = null;
+
+        /**
+         * Error invalidService.
+         * @member {error.IInvalidService|null|undefined} invalidService
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.invalidService = null;
+
+        /**
+         * Error prostDecodeError.
+         * @member {error.IProstDecodeError|null|undefined} prostDecodeError
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.prostDecodeError = null;
+
+        /**
+         * Error prostEncodeError.
+         * @member {error.IProstEncodeError|null|undefined} prostEncodeError
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.prostEncodeError = null;
+
+        /**
+         * Error executeError.
+         * @member {error.IExecuteError|null|undefined} executeError
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.executeError = null;
+
+        /**
+         * Error malformatRpcPacket.
+         * @member {error.IMalformatRpcPacket|null|undefined} malformatRpcPacket
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.malformatRpcPacket = null;
+
+        /**
+         * Error timeout.
+         * @member {error.ITimeout|null|undefined} timeout
+         * @memberof error.Error
+         * @instance
+         */
+        Error.prototype.timeout = null;
+
+        // OneOf field names bound to virtual getters and setters
+        let $oneOfFields;
+
+        /**
+         * Error errorKind.
+         * @member {"otherError"|"invalidMethodIndex"|"invalidService"|"prostDecodeError"|"prostEncodeError"|"executeError"|"malformatRpcPacket"|"timeout"|undefined} errorKind
+         * @memberof error.Error
+         * @instance
+         */
+        Object.defineProperty(Error.prototype, "errorKind", {
+            get: $util.oneOfGetter($oneOfFields = ["otherError", "invalidMethodIndex", "invalidService", "prostDecodeError", "prostEncodeError", "executeError", "malformatRpcPacket", "timeout"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        /**
+         * Creates a new Error instance using the specified properties.
+         * @function create
+         * @memberof error.Error
+         * @static
+         * @param {error.IError=} [properties] Properties to set
+         * @returns {error.Error} Error instance
+         */
+        Error.create = function create(properties) {
+            return new Error(properties);
+        };
+
+        /**
+         * Encodes the specified Error message. Does not implicitly {@link error.Error.verify|verify} messages.
+         * @function encode
+         * @memberof error.Error
+         * @static
+         * @param {error.IError} message Error message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Error.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.otherError != null && Object.hasOwnProperty.call(message, "otherError"))
+                $root.error.OtherError.encode(message.otherError, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.invalidMethodIndex != null && Object.hasOwnProperty.call(message, "invalidMethodIndex"))
+                $root.error.InvalidMethodIndex.encode(message.invalidMethodIndex, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.invalidService != null && Object.hasOwnProperty.call(message, "invalidService"))
+                $root.error.InvalidService.encode(message.invalidService, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            if (message.prostDecodeError != null && Object.hasOwnProperty.call(message, "prostDecodeError"))
+                $root.error.ProstDecodeError.encode(message.prostDecodeError, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.prostEncodeError != null && Object.hasOwnProperty.call(message, "prostEncodeError"))
+                $root.error.ProstEncodeError.encode(message.prostEncodeError, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.executeError != null && Object.hasOwnProperty.call(message, "executeError"))
+                $root.error.ExecuteError.encode(message.executeError, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.malformatRpcPacket != null && Object.hasOwnProperty.call(message, "malformatRpcPacket"))
+                $root.error.MalformatRpcPacket.encode(message.malformatRpcPacket, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.timeout != null && Object.hasOwnProperty.call(message, "timeout"))
+                $root.error.Timeout.encode(message.timeout, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Error message, length delimited. Does not implicitly {@link error.Error.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof error.Error
+         * @static
+         * @param {error.IError} message Error message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Error.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an Error message from the specified reader or buffer.
+         * @function decode
+         * @memberof error.Error
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {error.Error} Error
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Error.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.error.Error();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.otherError = $root.error.OtherError.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 2: {
+                        message.invalidMethodIndex = $root.error.InvalidMethodIndex.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 3: {
+                        message.invalidService = $root.error.InvalidService.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 4: {
+                        message.prostDecodeError = $root.error.ProstDecodeError.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 5: {
+                        message.prostEncodeError = $root.error.ProstEncodeError.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.executeError = $root.error.ExecuteError.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 7: {
+                        message.malformatRpcPacket = $root.error.MalformatRpcPacket.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 8: {
+                        message.timeout = $root.error.Timeout.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an Error message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof error.Error
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {error.Error} Error
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Error.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an Error message.
+         * @function verify
+         * @memberof error.Error
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Error.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            let properties = {};
+            if (message.otherError != null && message.hasOwnProperty("otherError")) {
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.OtherError.verify(message.otherError);
+                    if (error)
+                        return "otherError." + error;
+                }
+            }
+            if (message.invalidMethodIndex != null && message.hasOwnProperty("invalidMethodIndex")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.InvalidMethodIndex.verify(message.invalidMethodIndex);
+                    if (error)
+                        return "invalidMethodIndex." + error;
+                }
+            }
+            if (message.invalidService != null && message.hasOwnProperty("invalidService")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.InvalidService.verify(message.invalidService);
+                    if (error)
+                        return "invalidService." + error;
+                }
+            }
+            if (message.prostDecodeError != null && message.hasOwnProperty("prostDecodeError")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.ProstDecodeError.verify(message.prostDecodeError);
+                    if (error)
+                        return "prostDecodeError." + error;
+                }
+            }
+            if (message.prostEncodeError != null && message.hasOwnProperty("prostEncodeError")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.ProstEncodeError.verify(message.prostEncodeError);
+                    if (error)
+                        return "prostEncodeError." + error;
+                }
+            }
+            if (message.executeError != null && message.hasOwnProperty("executeError")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.ExecuteError.verify(message.executeError);
+                    if (error)
+                        return "executeError." + error;
+                }
+            }
+            if (message.malformatRpcPacket != null && message.hasOwnProperty("malformatRpcPacket")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.MalformatRpcPacket.verify(message.malformatRpcPacket);
+                    if (error)
+                        return "malformatRpcPacket." + error;
+                }
+            }
+            if (message.timeout != null && message.hasOwnProperty("timeout")) {
+                if (properties.errorKind === 1)
+                    return "errorKind: multiple values";
+                properties.errorKind = 1;
+                {
+                    let error = $root.error.Timeout.verify(message.timeout);
+                    if (error)
+                        return "timeout." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates an Error message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof error.Error
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {error.Error} Error
+         */
+        Error.fromObject = function fromObject(object) {
+            if (object instanceof $root.error.Error)
+                return object;
+            let message = new $root.error.Error();
+            if (object.otherError != null) {
+                if (typeof object.otherError !== "object")
+                    throw TypeError(".error.Error.otherError: object expected");
+                message.otherError = $root.error.OtherError.fromObject(object.otherError);
+            }
+            if (object.invalidMethodIndex != null) {
+                if (typeof object.invalidMethodIndex !== "object")
+                    throw TypeError(".error.Error.invalidMethodIndex: object expected");
+                message.invalidMethodIndex = $root.error.InvalidMethodIndex.fromObject(object.invalidMethodIndex);
+            }
+            if (object.invalidService != null) {
+                if (typeof object.invalidService !== "object")
+                    throw TypeError(".error.Error.invalidService: object expected");
+                message.invalidService = $root.error.InvalidService.fromObject(object.invalidService);
+            }
+            if (object.prostDecodeError != null) {
+                if (typeof object.prostDecodeError !== "object")
+                    throw TypeError(".error.Error.prostDecodeError: object expected");
+                message.prostDecodeError = $root.error.ProstDecodeError.fromObject(object.prostDecodeError);
+            }
+            if (object.prostEncodeError != null) {
+                if (typeof object.prostEncodeError !== "object")
+                    throw TypeError(".error.Error.prostEncodeError: object expected");
+                message.prostEncodeError = $root.error.ProstEncodeError.fromObject(object.prostEncodeError);
+            }
+            if (object.executeError != null) {
+                if (typeof object.executeError !== "object")
+                    throw TypeError(".error.Error.executeError: object expected");
+                message.executeError = $root.error.ExecuteError.fromObject(object.executeError);
+            }
+            if (object.malformatRpcPacket != null) {
+                if (typeof object.malformatRpcPacket !== "object")
+                    throw TypeError(".error.Error.malformatRpcPacket: object expected");
+                message.malformatRpcPacket = $root.error.MalformatRpcPacket.fromObject(object.malformatRpcPacket);
+            }
+            if (object.timeout != null) {
+                if (typeof object.timeout !== "object")
+                    throw TypeError(".error.Error.timeout: object expected");
+                message.timeout = $root.error.Timeout.fromObject(object.timeout);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an Error message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof error.Error
+         * @static
+         * @param {error.Error} message Error
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Error.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (message.otherError != null && message.hasOwnProperty("otherError")) {
+                object.otherError = $root.error.OtherError.toObject(message.otherError, options);
+                if (options.oneofs)
+                    object.errorKind = "otherError";
+            }
+            if (message.invalidMethodIndex != null && message.hasOwnProperty("invalidMethodIndex")) {
+                object.invalidMethodIndex = $root.error.InvalidMethodIndex.toObject(message.invalidMethodIndex, options);
+                if (options.oneofs)
+                    object.errorKind = "invalidMethodIndex";
+            }
+            if (message.invalidService != null && message.hasOwnProperty("invalidService")) {
+                object.invalidService = $root.error.InvalidService.toObject(message.invalidService, options);
+                if (options.oneofs)
+                    object.errorKind = "invalidService";
+            }
+            if (message.prostDecodeError != null && message.hasOwnProperty("prostDecodeError")) {
+                object.prostDecodeError = $root.error.ProstDecodeError.toObject(message.prostDecodeError, options);
+                if (options.oneofs)
+                    object.errorKind = "prostDecodeError";
+            }
+            if (message.prostEncodeError != null && message.hasOwnProperty("prostEncodeError")) {
+                object.prostEncodeError = $root.error.ProstEncodeError.toObject(message.prostEncodeError, options);
+                if (options.oneofs)
+                    object.errorKind = "prostEncodeError";
+            }
+            if (message.executeError != null && message.hasOwnProperty("executeError")) {
+                object.executeError = $root.error.ExecuteError.toObject(message.executeError, options);
+                if (options.oneofs)
+                    object.errorKind = "executeError";
+            }
+            if (message.malformatRpcPacket != null && message.hasOwnProperty("malformatRpcPacket")) {
+                object.malformatRpcPacket = $root.error.MalformatRpcPacket.toObject(message.malformatRpcPacket, options);
+                if (options.oneofs)
+                    object.errorKind = "malformatRpcPacket";
+            }
+            if (message.timeout != null && message.hasOwnProperty("timeout")) {
+                object.timeout = $root.error.Timeout.toObject(message.timeout, options);
+                if (options.oneofs)
+                    object.errorKind = "timeout";
+            }
+            return object;
+        };
+
+        /**
+         * Converts this Error to JSON.
+         * @function toJSON
+         * @memberof error.Error
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Error.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for Error
+         * @function getTypeUrl
+         * @memberof error.Error
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        Error.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/error.Error";
+        };
+
+        return Error;
+    })();
+
+    return error;
+})();
+
 export const peer_rpc = $root.peer_rpc = (() => {
 
     /**
@@ -8910,7 +8910,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
          * @property {number|null} [version] RoutePeerInfo version
          * @property {string|null} [easytierVersion] RoutePeerInfo easytierVersion
          * @property {common.IPeerFeatureFlag|null} [featureFlag] RoutePeerInfo featureFlag
-         * @property {number|Long|null} [peerRouteId] RoutePeerInfo peerRouteId
+         * @property {Long|null} [peerRouteId] RoutePeerInfo peerRouteId
          * @property {number|null} [networkLength] RoutePeerInfo networkLength
          * @property {number|null} [quicPort] RoutePeerInfo quicPort
          * @property {common.IIpv6Inet|null} [ipv6Addr] RoutePeerInfo ipv6Addr
@@ -9024,7 +9024,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
 
         /**
          * RoutePeerInfo peerRouteId.
-         * @member {number|Long} peerRouteId
+         * @member {Long} peerRouteId
          * @memberof peer_rpc.RoutePeerInfo
          * @instance
          */
@@ -12120,7 +12120,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
          * @memberof peer_rpc
          * @interface ISyncRouteInfoRequest
          * @property {number|null} [myPeerId] SyncRouteInfoRequest myPeerId
-         * @property {number|Long|null} [mySessionId] SyncRouteInfoRequest mySessionId
+         * @property {Long|null} [mySessionId] SyncRouteInfoRequest mySessionId
          * @property {boolean|null} [isInitiator] SyncRouteInfoRequest isInitiator
          * @property {peer_rpc.IRoutePeerInfos|null} [peerInfos] SyncRouteInfoRequest peerInfos
          * @property {peer_rpc.IRouteConnBitmap|null} [connBitmap] SyncRouteInfoRequest connBitmap
@@ -12152,7 +12152,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
 
         /**
          * SyncRouteInfoRequest mySessionId.
-         * @member {number|Long} mySessionId
+         * @member {Long} mySessionId
          * @memberof peer_rpc.SyncRouteInfoRequest
          * @instance
          */
@@ -12484,7 +12484,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
          * @memberof peer_rpc
          * @interface ISyncRouteInfoResponse
          * @property {boolean|null} [isInitiator] SyncRouteInfoResponse isInitiator
-         * @property {number|Long|null} [sessionId] SyncRouteInfoResponse sessionId
+         * @property {Long|null} [sessionId] SyncRouteInfoResponse sessionId
          * @property {peer_rpc.SyncRouteInfoError|null} [error] SyncRouteInfoResponse error
          */
 
@@ -12513,7 +12513,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
 
         /**
          * SyncRouteInfoResponse sessionId.
-         * @member {number|Long} sessionId
+         * @member {Long} sessionId
          * @memberof peer_rpc.SyncRouteInfoResponse
          * @instance
          */
@@ -17214,7 +17214,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
          * Properties of a GetGlobalPeerMapRequest.
          * @memberof peer_rpc
          * @interface IGetGlobalPeerMapRequest
-         * @property {number|Long|null} [digest] GetGlobalPeerMapRequest digest
+         * @property {Long|null} [digest] GetGlobalPeerMapRequest digest
          */
 
         /**
@@ -17234,7 +17234,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
 
         /**
          * GetGlobalPeerMapRequest digest.
-         * @member {number|Long} digest
+         * @member {Long} digest
          * @memberof peer_rpc.GetGlobalPeerMapRequest
          * @instance
          */
@@ -17434,7 +17434,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
          * @memberof peer_rpc
          * @interface IGetGlobalPeerMapResponse
          * @property {Object.<string,peer_rpc.IPeerInfoForGlobalMap>|null} [globalPeerMap] GetGlobalPeerMapResponse globalPeerMap
-         * @property {number|Long|null} [digest] GetGlobalPeerMapResponse digest
+         * @property {Long|null} [digest] GetGlobalPeerMapResponse digest
          */
 
         /**
@@ -17463,7 +17463,7 @@ export const peer_rpc = $root.peer_rpc = (() => {
 
         /**
          * GetGlobalPeerMapResponse digest.
-         * @member {number|Long|null|undefined} digest
+         * @member {Long|null|undefined} digest
          * @memberof peer_rpc.GetGlobalPeerMapResponse
          * @instance
          */
@@ -18439,7 +18439,7 @@ export const google = $root.google = (() => {
              * Properties of a Timestamp.
              * @memberof google.protobuf
              * @interface ITimestamp
-             * @property {number|Long|null} [seconds] Timestamp seconds
+             * @property {Long|null} [seconds] Timestamp seconds
              * @property {number|null} [nanos] Timestamp nanos
              */
 
@@ -18460,7 +18460,7 @@ export const google = $root.google = (() => {
 
             /**
              * Timestamp seconds.
-             * @member {number|Long} seconds
+             * @member {Long} seconds
              * @memberof google.protobuf.Timestamp
              * @instance
              */
