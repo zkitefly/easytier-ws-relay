@@ -134,6 +134,28 @@ easytier-ws-relay/
 
 修改完配置后按正常方式运行 `wrangler dev` 或部署即可生效。
 
+## Durable Object 地区配置
+
+Durable Object 默认会根据请求来源自动选择最近的地区部署。如需指定地区，可在 `wrangler.toml` 的 `[vars]` 中配置：
+
+- `LOCATION_HINT`: Durable Object 的位置提示，可选值如下：
+
+| 参数 | 地区 |
+|------|------|
+| `wnam` | 西部地区（北美） |
+| `enam` | 东部地区（北美） |
+| `sam` | 南美洲 |
+| `weur` | 西欧 |
+| `eeur` | 东欧 |
+| `apac` | 亚太地区（默认） |
+| `oc` | 大洋洲 |
+| `afr` | 非洲 |
+| `me` | 中东 |
+
+> 详细说明请参考 [Cloudflare 官方文档](https://developers.cloudflare.com/durable-objects/reference/data-location/#supported-locations-1)
+
+修改完配置后按正常方式运行 `wrangler dev` 或部署即可生效。
+
 ## 客户端连接说明
 
 部署后，EasyTier 客户端连接地址需要添加路径 `/ws`。
