@@ -148,5 +148,9 @@ export class RelayRoom {
   _restoreSocket(ws) {
     const meta = ws.deserializeAttachment ? (ws.deserializeAttachment() || {}) : {};
     this._initSocket(ws, meta);
+    
+    if (ws.peerId && ws.groupKey) {
+      this.peerManager.addPeer(ws.peerId, ws);
+    }
   }
 }
