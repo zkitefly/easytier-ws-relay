@@ -306,6 +306,12 @@ export class PeerManager {
     const groupKey = ws && ws.groupKey ? String(ws.groupKey) : '';
     if (peerId === undefined) return false;
     const peers = this._getPeersMap(groupKey, false);
+    const storedWs = peers && peers.get(peerId);
+    const isStaleClose = storedWs && storedWs !== ws;
+    if (isStaleClose) {
+      // Old socket close arrived after new handshake - new connection took over, do nothing
+      return false;
+    }
     const wasPresent = peers && peers.has(peerId);
     if (peers) peers.delete(peerId);
     const infos = this._getPeerInfosMap(groupKey, false);
