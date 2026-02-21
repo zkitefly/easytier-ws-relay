@@ -108,8 +108,17 @@ export class RelayRoom {
           handleForwarding(ws, header, buffer, this.types);
       }
     } catch (e) {
-      console.error('relay_room message handling error:', e);
-      try { ws.close(1011, 'internal error'); } catch (_) { }
+      const msg = e?.message ?? String(e);
+      const isStaleIo = /different Durable Object|after close/i.test(msg);
+      if (isStaleIo) {
+        console.warn('[ws] message handling skipped (stale I/O or closed):', msg);
+      } else {
+        console.error('relay_room message handling error:', e);
+      }
+      // Only close if still open and error is not from stale I/O / already-closed
+      if (!isStaleIo && ws.readyState === 1) {
+        try { ws.close(1011, 'internal error'); } catch (_) { }
+      }
     }
   }
 

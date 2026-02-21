@@ -82,17 +82,17 @@ export function handleHandshake(ws, header, payload, types) {
       ws.weAreInitiator = false;
     }
 
-    setTimeout(() => {
-      try {
-        if (ws.readyState === WS_OPEN) {
-          const pm = getPeerManager();
-          pm.pushRouteUpdateTo(peerId, ws, types, { forceFull: true });
-          pm.broadcastRouteUpdate(types, ws.groupKey, peerId, { forceFull: true });
-        }
-      } catch (e) {
-        console.error(`Failed to push initial route update to ${peerId}:`, e.message);
+    // Do initial route update synchronously. Do NOT use setTimeout: after DO hibernation
+    // the callback runs in a new instance and ws is bound to the old instance, causing
+    // "Cannot perform I/O on behalf of a different Durable Object".
+    try {
+      if (ws.readyState === WS_OPEN) {
+        pm.pushRouteUpdateTo(peerId, ws, types, { forceFull: true });
+        pm.broadcastRouteUpdate(types, ws.groupKey, peerId, { forceFull: true });
       }
-    }, 50);
+    } catch (e) {
+      console.error(`Failed to push initial route update to ${peerId}:`, e.message);
+    }
 
   } catch (e) {
     console.error('Handshake error:', e);
@@ -101,8 +101,14 @@ export function handleHandshake(ws, header, payload, types) {
 }
 
 export function handlePing(ws, header, payload) {
-  const msg = wrapPacket(createHeader, MY_PEER_ID, header.fromPeerId, PacketType.Pong, payload, ws);
-  ws.send(msg);
+  if (ws.readyState !== WS_OPEN) return;
+  try {
+    const msg = wrapPacket(createHeader, MY_PEER_ID, header.fromPeerId, PacketType.Pong, payload, ws);
+    ws.send(msg);
+  } catch (e) {
+    // Socket may have closed; avoid throwing so we don't trigger relay_room to close(1011)
+    console.warn(`[ws] Pong to ${header.fromPeerId} failed:`, e?.message);
+  }
 }
 
 export function handleForwarding(sourceWs, header, fullMessage, types) {
