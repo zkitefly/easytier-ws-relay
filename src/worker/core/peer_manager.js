@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer';
-import { MY_PEER_ID, PacketType } from './constants.js';
+import { MY_PEER_ID, PacketType, normalizePeerId } from './constants.js';
 import { createHeader } from './packet.js';
 import { wrapPacket, randomU64String } from './crypto.js';
 
@@ -144,24 +144,33 @@ export class PeerManager {
   }
 
   bumpPeerConnVersion(groupKey, peerId) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return 0;
     const m = this._getPeerConnVersionMap(groupKey, true);
-    const current = m.get(peerId) || 0;
+    const current = m.get(pid) || 0;
     const next = current + 1;
-    m.set(peerId, next);
+    m.set(pid, next);
     return next;
   }
 
   getPeerConnVersion(groupKey, peerId) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return 0;
     const m = this._getPeerConnVersionMap(groupKey, false);
-    return m ? (m.get(peerId) || 0) : 0;
+    return m ? (m.get(pid) || 0) : 0;
   }
 
   bumpAllPeerConnVersions(groupKey) {
-    const allPeers = new Set(this.listPeerIdsInGroup(groupKey));
+    const allPeers = new Set();
+    for (const pid of this.listPeerIdsInGroup(groupKey)) {
+      const n = normalizePeerId(pid);
+      if (n !== undefined) allPeers.add(n);
+    }
     const infos = this._getPeerInfosMap(groupKey, false);
     if (infos) {
       for (const pid of infos.keys()) {
-        allPeers.add(pid);
+        const n = normalizePeerId(pid);
+        if (n !== undefined) allPeers.add(n);
       }
     }
     allPeers.add(MY_PEER_ID);
@@ -220,6 +229,8 @@ export class PeerManager {
   }
 
   _getSession(groupKey, peerId, create = false) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return null;
     const now = Date.now();
     if (now - this.lastSessionCleanup > Math.max(30_000, Math.min(this.sessionTtlMs / 2, 120_000))) {
       this.cleanupSessions(now);
@@ -231,7 +242,7 @@ export class PeerManager {
       this.routeSessions.set(gk, g);
     }
     if (!g) return null;
-    let s = g.get(peerId);
+    let s = g.get(pid);
     if (!s && create) {
       s = {
         mySessionId: null,
@@ -243,7 +254,7 @@ export class PeerManager {
         lastTouch: Date.now(),
         lastConnBitmapSig: null,
       };
-      g.set(peerId, s);
+      g.set(pid, s);
     }
     if (s) s.lastTouch = Date.now();
     return s;
@@ -263,7 +274,9 @@ export class PeerManager {
   }
 
   onRouteSessionAck(groupKey, peerId, theirSessionId, weAreInitiator) {
-    const s = this._getSession(groupKey, peerId, true);
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return;
+    const s = this._getSession(groupKey, pid, true);
     if (s.dstSessionId !== theirSessionId) {
       s.peerInfoVerMap.clear();
       s.connBitmapVerMap.clear();
@@ -277,24 +290,42 @@ export class PeerManager {
   }
 
   addPeer(peerId, ws) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return;
     const groupKey = ws && ws.groupKey ? String(ws.groupKey) : '';
     const peers = this._getPeersMap(groupKey, true);
-    const isNewPeer = !peers.has(peerId);
-    peers.set(peerId, ws);
+    const isNewPeer = !peers.has(pid);
+    peers.set(pid, ws);
     if (isNewPeer) {
       this.bumpAllPeerConnVersions(groupKey);
     }
   }
 
   removePeer(ws) {
-    const peerId = ws && ws.peerId;
+    const peerId = normalizePeerId(ws && ws.peerId);
     const groupKey = ws && ws.groupKey ? String(ws.groupKey) : '';
-    if (!peerId) return false;
+    if (peerId === undefined) return false;
     const peers = this._getPeersMap(groupKey, false);
     const wasPresent = peers && peers.has(peerId);
     if (peers) peers.delete(peerId);
     const infos = this._getPeerInfosMap(groupKey, false);
-    if (infos) infos.delete(peerId);
+    if (infos) {
+      infos.delete(peerId);
+      // Clean orphaned peer infos: peers we only knew via the disconnected peer (no direct ws)
+      const directPeerIds = new Set([MY_PEER_ID]);
+      if (peers) {
+        for (const k of peers.keys()) {
+          const n = normalizePeerId(k);
+          if (n !== undefined) directPeerIds.add(n);
+        }
+      }
+      const orphanedKeys = [];
+      for (const pid of infos.keys()) {
+        const n = normalizePeerId(pid);
+        if (n !== undefined && !directPeerIds.has(n)) orphanedKeys.push(pid);
+      }
+      for (const k of orphanedKeys) infos.delete(k);
+    }
     const sessions = this.routeSessions.get(groupKey);
     if (sessions) {
       sessions.delete(peerId);
@@ -316,8 +347,10 @@ export class PeerManager {
   }
 
   getPeerWs(peerId, groupKey) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return undefined;
     const peers = this._getPeersMap(groupKey, false);
-    return peers ? peers.get(peerId) : undefined;
+    return peers ? peers.get(pid) : undefined;
   }
 
   listPeerIdsInGroup(groupKey) {
@@ -331,9 +364,11 @@ export class PeerManager {
   }
 
   updatePeerInfo(groupKey, peerId, info) {
+    const pid = normalizePeerId(peerId);
+    if (pid === undefined) return;
     const infos = this._getPeerInfosMap(groupKey, true);
-    const isNew = !infos.has(peerId);
-    infos.set(peerId, info);
+    const isNew = !infos.has(pid);
+    infos.set(pid, info);
     if (isNew) {
       this.bumpAllPeerConnVersions(groupKey);
     }
@@ -372,11 +407,12 @@ export class PeerManager {
 
   broadcastRouteUpdate(types, groupKey, excludePeerId, opts = {}) {
     const forceFull = opts.forceFull !== undefined ? !!opts.forceFull : true;
+    const excludePid = normalizePeerId(excludePeerId);
     if (groupKey !== undefined) {
       const peers = this._getPeersMap(groupKey, false);
       if (!peers) return;
       for (const [peerId, ws] of peers.entries()) {
-        if (peerId === excludePeerId) continue;
+        if (excludePid !== undefined && normalizePeerId(peerId) === excludePid) continue;
         if (ws.readyState === WS_OPEN) {
           this.pushRouteUpdateTo(peerId, ws, types, { forceFull });
         }
@@ -385,7 +421,7 @@ export class PeerManager {
     }
     for (const [gk, peers] of this.peersByGroup.entries()) {
       for (const [peerId, ws] of peers.entries()) {
-        if (peerId === excludePeerId) continue;
+        if (excludePid !== undefined && normalizePeerId(peerId) === excludePid) continue;
         if (ws.readyState === WS_OPEN) {
           this.pushRouteUpdateTo(peerId, ws, types, { forceFull });
         }
@@ -394,9 +430,11 @@ export class PeerManager {
   }
 
   pushRouteUpdateTo(targetPeerId, ws, types, opts = {}) {
+    const targetPid = normalizePeerId(targetPeerId);
+    if (targetPid === undefined) return;
     const forceFull = !!opts.forceFull;
     const groupKey = ws && ws.groupKey ? String(ws.groupKey) : '';
-    const session = this._getSession(groupKey, targetPeerId, true);
+    const session = this._getSession(groupKey, targetPid, true);
     const myInfo = this.ensureMyInfo();
     if (!ws.serverSessionId) {
       ws.serverSessionId = randomU64String();
@@ -404,14 +442,19 @@ export class PeerManager {
     session.mySessionId = ws.serverSessionId;
     const forceFullLocal = forceFull || !session.dstSessionId;
 
-    const allPeers = new Set(this.listPeerIdsInGroup(groupKey));
+    const allPeers = new Set();
+    for (const pid of this.listPeerIdsInGroup(groupKey)) {
+      const n = normalizePeerId(pid);
+      if (n !== undefined) allPeers.add(n);
+    }
     const infos = this._getPeerInfosMap(groupKey, false);
     if (infos) {
       for (const pid of infos.keys()) {
-        allPeers.add(pid);
+        const n = normalizePeerId(pid);
+        if (n !== undefined) allPeers.add(n);
       }
     }
-    allPeers.add(targetPeerId);
+    allPeers.add(targetPid);
     const relevantPeers = [MY_PEER_ID, ...Array.from(allPeers).filter(p => p !== MY_PEER_ID).sort((a, b) => Number(a) - Number(b))];
     const defaultNetLen = myInfo.networkLength || 24;
 
@@ -469,10 +512,10 @@ export class PeerManager {
       }
       const bitmapBuf = Buffer.from(bitmap);
       const sig = `${peerIdVersions.map(p => `${p.peerId}:${p.version}`).join(',')}|${bitmapBuf.toString('hex')}`;
-      const connVersion = session.connBitmapVerMap.get(targetPeerId) || 0;
+      const connVersion = session.connBitmapVerMap.get(targetPid) || 0;
       const nextConnVersion = connVersion || Math.max(...peerIdVersions.map(p => p.version));
       if (sig !== session.lastConnBitmapSig) {
-        session.connBitmapVerMap.set(targetPeerId, nextConnVersion);
+        session.connBitmapVerMap.set(targetPid, nextConnVersion);
         session.lastConnBitmapSig = sig;
         connBitmap = { peerIds: peerIdVersions, bitmap: bitmapBuf, version: nextConnVersion };
       }
@@ -524,7 +567,7 @@ export class PeerManager {
 
     const rpcReqPacket = {
       fromPeer: MY_PEER_ID,
-      toPeer: targetPeerId,
+      toPeer: targetPid,
       transactionId: Number(BigInt.asUintN(32, BigInt(randomU64String()))),
       descriptor: {
         domainName: ws.domainName || "public_server",
@@ -542,7 +585,7 @@ export class PeerManager {
 
     const rpcPacketBytes = t.RpcPacket.encode(rpcReqPacket).finish();
     try {
-      ws.send(wrapPacket(createHeader, MY_PEER_ID, targetPeerId, PacketType.RpcReq, rpcPacketBytes, ws));
+      ws.send(wrapPacket(createHeader, MY_PEER_ID, targetPid, PacketType.RpcReq, rpcPacketBytes, ws));
     } catch (e) {
       // ignore
     }

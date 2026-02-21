@@ -1,4 +1,4 @@
-import { MAGIC, VERSION, MY_PEER_ID, PacketType } from './constants.js';
+import { MAGIC, VERSION, MY_PEER_ID, PacketType, normalizePeerId } from './constants.js';
 import { createHeader } from './packet.js';
 import { getPeerManager } from './peer_manager.js';
 import { wrapPacket, randomU64String } from './crypto.js';
@@ -53,11 +53,17 @@ export function handleHandshake(ws, header, payload, types) {
     };
 
     ws.groupKey = groupKey;
-    ws.peerId = req.myPeerId;
+    const peerId = normalizePeerId(req.myPeerId);
+    if (peerId === undefined) {
+      console.error('Invalid myPeerId in handshake');
+      ws.close();
+      return;
+    }
+    ws.peerId = peerId;
     const pm = getPeerManager();
-    pm.addPeer(req.myPeerId, ws);
-    pm.updatePeerInfo(ws.groupKey, req.myPeerId, {
-      peerId: req.myPeerId,
+    pm.addPeer(peerId, ws);
+    pm.updatePeerInfo(ws.groupKey, peerId, {
+      peerId,
       version: 1,
       lastUpdate: { seconds: Math.floor(Date.now() / 1000), nanos: 0 },
       instId: { part1: 0, part2: 0, part3: 0, part4: 0 },
@@ -67,7 +73,7 @@ export function handleHandshake(ws, header, payload, types) {
     ws.crypto = { enabled: false };
 
     const respBuffer = types.HandshakeRequest.encode(respPayload).finish();
-    const respHeader = createHeader(MY_PEER_ID, req.myPeerId, PacketType.HandShake, respBuffer.length);
+    const respHeader = createHeader(MY_PEER_ID, peerId, PacketType.HandShake, respBuffer.length);
     ws.send(Buffer.concat([respHeader, Buffer.from(respBuffer)]));
     if (!ws.serverSessionId) {
       ws.serverSessionId = randomU64String();
@@ -80,11 +86,11 @@ export function handleHandshake(ws, header, payload, types) {
       try {
         if (ws.readyState === WS_OPEN) {
           const pm = getPeerManager();
-          pm.pushRouteUpdateTo(req.myPeerId, ws, types, { forceFull: true });
-          pm.broadcastRouteUpdate(types, ws.groupKey, req.myPeerId, { forceFull: true });
+          pm.pushRouteUpdateTo(peerId, ws, types, { forceFull: true });
+          pm.broadcastRouteUpdate(types, ws.groupKey, peerId, { forceFull: true });
         }
       } catch (e) {
-        console.error(`Failed to push initial route update to ${req.myPeerId}:`, e.message);
+        console.error(`Failed to push initial route update to ${peerId}:`, e.message);
       }
     }, 50);
 

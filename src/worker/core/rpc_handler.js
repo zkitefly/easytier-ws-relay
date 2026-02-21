@@ -1,4 +1,4 @@
-import { MY_PEER_ID, PacketType } from './constants.js';
+import { MY_PEER_ID, PacketType, normalizePeerId } from './constants.js';
 import { createHeader } from './packet.js';
 import { getPeerManager } from './peer_manager.js';
 import { wrapPacket, randomU64String, sha256 } from './crypto.js';
@@ -113,10 +113,17 @@ function calcPeerCenterDigestFromMap(mapObj) {
 
 function buildPeerCenterResponseMap(groupKey, state) {
   const out = {};
-  const set = new Set(pm().listPeerIdsInGroup(groupKey));
+  const set = new Set();
+  for (const pid of pm().listPeerIdsInGroup(groupKey)) {
+    const n = normalizePeerId(pid);
+    if (n !== undefined) set.add(n);
+  }
   const infos = pm()._getPeerInfosMap(groupKey, false);
   if (infos) {
-    for (const pid of infos.keys()) set.add(pid);
+    for (const pid of infos.keys()) {
+      const n = normalizePeerId(pid);
+      if (n !== undefined) set.add(n);
+    }
   }
   for (const peerId of set) {
     const key = String(peerId);
@@ -435,14 +442,15 @@ function handleSyncRouteInfo(ws, fromPeerId, reqRpcPacket, syncReq, types) {
   let hasNewPeers = false;
   if (syncReq.peerInfos && syncReq.peerInfos.items) {
     syncReq.peerInfos.items.forEach(info => {
-      if (info.peerId !== MY_PEER_ID) {
+      const pid = normalizePeerId(info.peerId);
+      if (pid === undefined) return;
+      if (pid !== MY_PEER_ID) {
         const infos = pm()._getPeerInfosMap(groupKey, false);
-        const isNew = !infos || !infos.has(info.peerId);
-        pm().updatePeerInfo(groupKey, info.peerId, info);
+        const isNew = !infos || !infos.has(pid);
+        pm().updatePeerInfo(groupKey, pid, info);
         if (isNew) hasNewPeers = true;
-      }
-      if (info.peerId === MY_PEER_ID) {
-        pm().updatePeerInfo(groupKey, info.peerId, info);
+      } else {
+        pm().updatePeerInfo(groupKey, pid, info);
       }
     });
   }
