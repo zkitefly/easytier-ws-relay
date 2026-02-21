@@ -7,6 +7,9 @@ import { handleRpcReq, handleRpcResp } from './core/rpc_handler.js';
 import { getPeerManager } from './core/peer_manager.js';
 import { randomU64String } from './core/crypto.js';
 
+const ALARM_INTERVAL_MS = Number(process.env.EASYTIER_ALARM_INTERVAL_MS || 15_000);
+const IDLE_TIMEOUT_MS = Number(process.env.EASYTIER_IDLE_TIMEOUT_MS || 90_000);
+
 export class RelayRoom {
   constructor(state, env) {
     this.state = state;
@@ -17,6 +20,40 @@ export class RelayRoom {
 
     // Restore sockets after hibernation to keep metadata
     this.state.getWebSockets().forEach((ws) => this._restoreSocket(ws));
+
+    // Schedule periodic alarm to cleanup closed/stale sockets (webSocketClose can be delayed)
+    this._scheduleAlarm();
+  }
+
+  _scheduleAlarm() {
+    try {
+      this.state.storage.setAlarm(Date.now() + ALARM_INTERVAL_MS);
+    } catch (_) { /* ignore */ }
+  }
+
+  async alarm() {
+    const now = Date.now();
+    const groupsToBroadcast = new Set();
+    for (const ws of this.state.getWebSockets()) {
+      if (!ws.peerId || !ws.groupKey) continue;
+      const isOpen = ws.readyState === 1;
+      const lastSeen = ws.lastSeen || 0;
+      const isStale = now - lastSeen > IDLE_TIMEOUT_MS;
+      if (!isOpen) {
+        const removed = this.peerManager.removePeer(ws);
+        if (removed) groupsToBroadcast.add(ws.groupKey);
+      } else if (isStale) {
+        try {
+          ws.close(4000, 'idle timeout');
+        } catch (_) { }
+      }
+    }
+    for (const gk of groupsToBroadcast) {
+      try {
+        this.peerManager.broadcastRouteUpdate(this.types, gk);
+      } catch (_) { }
+    }
+    this._scheduleAlarm();
   }
 
   async fetch(request) {
