@@ -4,8 +4,8 @@ compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-WS_PATH = "ws"
-EASYTIER_DISABLE_RELAY = "0"
+WS_PATH = "/"
+EASYTIER_DISABLE_RELAY = "1"
 EASYTIER_COMPRESS_RPC = "1"
 LOCATION_HINT = "apac"
 
