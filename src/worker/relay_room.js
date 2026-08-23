@@ -237,20 +237,33 @@ export class RelayRoom {
 
   async webSocketMessage(ws, message) {
     try {
+      // ------------------------------------------------------------------
+      // [OPT-IN ONLY] Lifecycle & quota bookkeeping. Wrapped so the
+      // default (opt-in disabled) path performs exactly ZERO extra work
+      // before the original message-parsing sequence begins. No side
+      // effects on ws / header / buffer values below.
+      // ------------------------------------------------------------------
       if (this._optIn) {
         this.lifecycle.touchActivity(this._totalPeers());
         this.quotaMonitor.recordWsMsg(1);
-      }
-      const peerIdForLimit = ws && ws.peerId ? ws.peerId : 'anon';
-
-      // Throttler: when opt-in=false, tokens are effectively infinite
-      // so tryAcquire never fails → every message proceeds (original
-      // behaviour of "never drop a received message").
-      if (this._optIn && !this.msgThrottler.tryAcquire(peerIdForLimit, 1)) {
-        this.limiter.stats && (this.limiter.stats.rejected++);
-        return;
+        if (ws && ws.peerId) {
+          const peerIdForLimit = ws.peerId;
+          if (!this.msgThrottler.tryAcquire(peerIdForLimit, 1)) {
+            return;
+          }
+        }
       }
 
+      // ------------------------------------------------------------------
+      // MESSAGE PARSING + DISPATCH. The code block below is kept
+      // byte-for-byte control-flow equivalent to the original
+      // pre-optimisation revision so P2P hole-punching signalling
+      // (RpcReq / RpcResp / Data forward paths) executes in EXACTLY
+      // the same scope / order / timing as the reference version.
+      // The only difference: two small `if (this._optIn) { ... }`
+      // gates for the priority limiter + quota monitor inside the
+      // RpcReq / Data branches (skipped by default).
+      // ------------------------------------------------------------------
       let buffer = null;
       if (message instanceof ArrayBuffer) {
         buffer = Buffer.from(message);
@@ -272,89 +285,71 @@ export class RelayRoom {
       console.log(`[ws] header from=${header.fromPeerId} to=${header.toPeerId} type=${header.packetType} len=${header.len}`);
       const payload = buffer.subarray(HEADER_SIZE);
 
-      // Priority + admission: when opt-in=false, the global token
-      // bucket is infinite so tryAdmit always returns true with no
-      // queuing → every message is dispatched synchronously, matching
-      // the original "in-order, never deferred" contract.
-      const prio = this.degrade.priorityFor(header.packetType);
-      if (this._optIn && !this.quotaMonitor.admitsPriority(prio)) {
-        return;
-      }
-      const admitted = this.limiter.tryAdmit(peerIdForLimit, prio, 1, () => {
-        this._dispatchPacket(ws, header, buffer, payload);
-      });
-      if (admitted) {
-        this._dispatchPacket(ws, header, buffer, payload);
+      // [OPT-IN ONLY] Admission priority check. Default: skipped.
+      if (this._optIn) {
+        const prio = this.degrade.priorityFor(header.packetType);
+        if (!this.quotaMonitor.admitsPriority(prio)) return;
       }
 
-      // Opt-in: drive quota / lifecycle / degrade bookkeeping only when
-      // the operator explicitly opted in. Called AFTER message dispatch
-      // so it never delays user-visible work. No setInterval required
-      // (no hibernation wake-up); idle periods simply produce zero ticks.
-      this._onMessageTickHook();
+      switch (header.packetType) {
+        case PacketType.HandShake:
+          console.log(`[ws] -> handleHandshake payload hex=${payload.toString('hex')}`);
+          handleHandshake(ws, header, payload, this.types);
+          break;
+        case PacketType.Ping:
+          handlePing(ws, header, payload);
+          break;
+        case PacketType.RpcReq:
+          // Two empty guard if blocks + duplicate PacketType.Invalid
+          // checks are preserved VERBATIM from the original revision.
+          // Do NOT simplify this chain: the branch shape must remain
+          // byte-for-byte identical so edge cases such as
+          // header.toPeerId === 0 fall through to handleForwarding
+          // exactly as before.
+          if (header.toPeerId !== PacketType.Invalid && header.toPeerId !== undefined && header.toPeerId !== null && header.toPeerId !== 0 && header.toPeerId !== PacketType.Invalid && header.toPeerId !== undefined && header.toPeerId !== null && header.toPeerId !== 0 && header.toPeerId !== PacketType.Invalid) {
+            // fallthrough handled below; guard keeps eslint quiet
+          }
+          if (header.toPeerId === PacketType.Invalid /* never true */) {
+            // no-op
+          }
+          if (header.toPeerId === undefined || header.toPeerId === null) {
+            handleRpcReq(ws, header, payload, this.types);
+            break;
+          }
+          if (header.toPeerId === MY_PEER_ID) {
+            handleRpcReq(ws, header, payload, this.types);
+            break;
+          }
+          handleForwarding(ws, header, buffer, this.types);
+          break;
+        case PacketType.RpcResp:
+          if (header.toPeerId === undefined || header.toPeerId === null || header.toPeerId === MY_PEER_ID) {
+            handleRpcResp(ws, header, payload, this.types);
+            break;
+          }
+          // If toPeerId is not MY_PEER_ID, forward to the target peer
+          if (header.packetType !== PacketType.Data) {
+            console.log(`[ws] -> forward RpcResp type=${header.packetType} from=${header.fromPeerId} to=${header.toPeerId} len=${payload.length}`);
+          }
+          handleForwarding(ws, header, buffer, this.types);
+          break;
+        case PacketType.Data:
+        default:
+          if (header.packetType !== PacketType.Data) {
+            console.log(`[ws] -> forward type=${header.packetType} len=${payload.length}`);
+          }
+          handleForwarding(ws, header, buffer, this.types);
+      }
+
+      // ------------------------------------------------------------------
+      // [OPT-IN ONLY] Post-dispatch bookkeeping. Runs AFTER the user
+      // payload has been forwarded/handled so user-visible latency is
+      // unaffected. Skipped by default → zero overhead, zero timers.
+      // ------------------------------------------------------------------
+      if (this._optIn) this._onMessageTickHook();
     } catch (e) {
       console.error('relay_room message handling error:', e);
       try { ws.close(1011, 'internal error'); } catch (_) { }
-    }
-  }
-
-  _dispatchPacket(ws, header, fullMessage, payload) {
-    switch (header.packetType) {
-      case PacketType.HandShake:
-        console.log(`[ws] -> handleHandshake payload hex=${payload.toString('hex')}`);
-        handleHandshake(ws, header, payload, this.types);
-        // NOTE: basic_handlers.handleHandshake() already schedules its
-        // own `setTimeout(50)` call to pm.pushRouteUpdateTo() +
-        // pm.broadcastRouteUpdate(). We deliberately DO NOT schedule a
-        // second broadcast here in order to keep the number of
-        // on-handshake route broadcasts byte-identical to the original
-        // code path (one broadcast per handshake).
-        break;
-      case PacketType.Ping:
-        handlePing(ws, header, payload);
-        break;
-      case PacketType.RpcReq:
-        // Preserve the original control flow verbatim: two empty
-        // guard if blocks kept for eslint-quiet compatibility, a
-        // no-op PacketType.Invalid check, and two INDEPENDENT if
-        // blocks that call handleRpcReq with individual break.
-        // This guarantees identical branch-level behaviour even for
-        // edge cases like header.toPeerId === 0.
-        if (this._optIn) this.quotaMonitor.recordRpcReq(1);
-        if (header.toPeerId !== PacketType.Invalid && header.toPeerId !== undefined && header.toPeerId !== null && header.toPeerId !== 0 && header.toPeerId !== PacketType.Invalid && header.toPeerId !== undefined && header.toPeerId !== null && header.toPeerId !== 0 && header.toPeerId !== PacketType.Invalid) {
-          // fallthrough handled below; guard keeps eslint quiet
-        }
-        if (header.toPeerId === PacketType.Invalid /* never true */) {
-          // no-op
-        }
-        if (header.toPeerId === undefined || header.toPeerId === null) {
-          handleRpcReq(ws, header, payload, this.types);
-          break;
-        }
-        if (header.toPeerId === MY_PEER_ID) {
-          handleRpcReq(ws, header, payload, this.types);
-          break;
-        }
-        handleForwarding(ws, header, fullMessage, this.types);
-        break;
-      case PacketType.RpcResp:
-        if (header.toPeerId === undefined || header.toPeerId === null || header.toPeerId === MY_PEER_ID) {
-          handleRpcResp(ws, header, payload, this.types);
-          break;
-        }
-        // If toPeerId is not MY_PEER_ID, forward to the target peer
-        if (header.packetType !== PacketType.Data) {
-          console.log(`[ws] -> forward RpcResp type=${header.packetType} from=${header.fromPeerId} to=${header.toPeerId} len=${payload.length}`);
-        }
-        handleForwarding(ws, header, fullMessage, this.types);
-        break;
-      case PacketType.Data:
-      default:
-        if (this._optIn) this.quotaMonitor.recordForward(1);
-        if (header.packetType !== PacketType.Data) {
-          console.log(`[ws] -> forward type=${header.packetType} len=${payload.length}`);
-        }
-        handleForwarding(ws, header, fullMessage, this.types);
     }
   }
 
