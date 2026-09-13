@@ -6,6 +6,7 @@ import { handleHandshake, handlePing, handleForwarding } from './core/basic_hand
 import { handleRpcReq, handleRpcResp } from './core/rpc_handler.js';
 import { getPeerManager } from './core/peer_manager.js';
 import { randomU64String } from './core/crypto.js';
+import { Federation } from './core/federation.js';
 
 export class RelayRoom {
   constructor(state, env) {
@@ -15,6 +16,13 @@ export class RelayRoom {
     this.peerManager = getPeerManager();
     this.peerManager.setTypes(this.types);
 
+    // Start federation syncer if configured to talk to remote relays
+    try {
+      this.federation = new Federation(env, this.types, this.peerManager);
+    } catch (e) {
+      console.error('Failed to init federation:', e && e.message);
+    }
+
     // Restore sockets after hibernation to keep metadata
     this.state.getWebSockets().forEach((ws) => this._restoreSocket(ws));
   }
@@ -22,6 +30,36 @@ export class RelayRoom {
   async fetch(request) {
     const url = new URL(request.url);
     const wsPath = '/' + this.env.WS_PATH || '/ws';
+
+    // Federation sync endpoint (used by other relays)
+    if (request.method === 'POST' && url.pathname === '/_federation/sync') {
+      // simple shared-secret authorization
+      const secret = this.env.EASYTIER_FEDERATION_SECRET || process.env.EASYTIER_FEDERATION_SECRET || '';
+      const header = request.headers.get('x-federation-secret') || '';
+      if (secret && header !== secret) {
+        return new Response('unauthorized', { status: 401 });
+      }
+      try {
+        const payload = await request.json();
+        const groupKey = payload.groupKey || '';
+        const peerInfos = Array.isArray(payload.peerInfos) ? payload.peerInfos : [];
+        for (const info of peerInfos) {
+          try {
+            // Update peer info locally so local connected clients can learn about them
+            this.peerManager.updatePeerInfo(groupKey, info.peerId || info.peer_id || 0, info);
+          } catch (e) {
+            console.warn('federation: failed to update peerInfo', e && e.message);
+          }
+        }
+        // Broadcast updated routing to local clients in that group
+        try { this.peerManager.broadcastRouteUpdate(this.types, groupKey); } catch (e) { }
+        return new Response('ok', { status: 200 });
+      } catch (e) {
+        console.error('federation /_federation/sync handle error', e && e.message);
+        return new Response('bad request', { status: 400 });
+      }
+    }
+
     if (url.pathname !== wsPath) {
       return new Response('Not found', { status: 404 });
     }

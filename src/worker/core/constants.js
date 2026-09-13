@@ -1,6 +1,9 @@
 export const MAGIC = 0xd1e1a5e1;
 export const VERSION = 1;
-export const MY_PEER_ID = 10000001; // Server Peer ID
+
+// Allow configuring server peer id via environment variable EASYTIER_PEER_ID.
+// This lets different Cloudflare deployments use distinct peer IDs.
+export const MY_PEER_ID = Number(process.env.EASYTIER_PEER_ID || process.env.EASYTIER_PEERID || 10000001);
 export const HEADER_SIZE = 16;
 
 export const PacketType = {

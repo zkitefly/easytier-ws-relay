@@ -1,34 +1,21 @@
 name = "easytier-ws-relay"
-main = "src/worker.js"
-compatibility_date = "2024-11-01"
-compatibility_flags = ["nodejs_compat"]
+main = "./src/worker.js"
+compatibility_date = "2023-04-01"
 
 [vars]
+# Basic network settings
 WS_PATH = "ws"
-EASYTIER_DISABLE_RELAY = "1"
-EASYTIER_COMPRESS_RPC = "1"
-LOCATION_HINT = "apac"
+EASYTIER_PUBLIC_SERVER_NETWORK_NAME = "public_server"
+EASYTIER_NETWORK_LENGTH = "24"
 
-[durable_objects]
-bindings = [
-  { name = "RELAY_ROOM", class_name = "RelayRoom" }
-]
+# Cross-relay federation (enable to allow relay-to-relay discovery)
+# Comma-separated list of remote relay base URLs. The federation endpoint is POST /_federation/sync
+REMOTE_RELAY_URLS = ""
+EASYTIER_FEDERATION_SECRET = ""
+FEDERATION_POLL_INTERVAL_MS = "5000"
 
-[[migrations]]
-tag = "v1"
-new_sqlite_classes = ["RelayRoom"]
+# Optional: assign a unique peer id per deployment
+# EASYTIER_PEER_ID = "10000011"
 
-[observability]
-enabled = false
-head_sampling_rate = 1
-
-[observability.logs]
-enabled = true
-head_sampling_rate = 1
-persist = true
-invocation_logs = true
-
-[observability.traces]
-enabled = true
-persist = true
-head_sampling_rate = 1
+# Pure P2P mode (if set to "1", relay avoids relaying data)
+EASYTIER_DISABLE_RELAY = "0"
