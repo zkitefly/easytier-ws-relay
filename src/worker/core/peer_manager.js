@@ -72,6 +72,9 @@ export class PeerManager {
     this.peerInfosByGroup = new Map(); // groupKey -> Map(peerId -> peerInfo)
     this.routeSessions = new Map(); // groupKey -> peerId -> session state
     this.peerConnVersions = new Map(); // groupKey -> peerId -> version
+    this.networkDigestRegistry = new Map(); // networkName -> secret digest
+    this.peerCenterStateByGroup = new Map(); // groupKey -> peer-center state
+    this.lastPeerCenterClean = 0;
     this.types = null;
 
     this.allowVirtualIP = false;
@@ -547,12 +550,4 @@ export class PeerManager {
       // ignore
     }
   }
-}
-
-let peerManagerInstance = null;
-export function getPeerManager() {
-  if (!peerManagerInstance) {
-    peerManagerInstance = new PeerManager();
-  }
-  return peerManagerInstance;
 }
