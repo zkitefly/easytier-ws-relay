@@ -162,17 +162,15 @@ Durable Object 默认会根据请求来源自动选择最近的地区部署。�
 
 默认情况下，WebSocket路径为`/ws`，该路径可以在`wrangler.toml`中通过`WS_PATH`变量进行自定义。
 
-Cloudflare Workers 部署地址建议显式使用 `8443`。EasyTier 的部分版本会把
-`wss://...:0` 原样放入 HTTP `Host` 请求头而被 Cloudflare 拒绝；省略端口时又可能
-回退到 EasyTier 自身的 WSS 默认端口 `11012`。
+easytier中端口号使用0为使用协议默认端口，ws对应80，wss对应443。
 
 开发模式:
 ```
-ws://your-network-ip:8787/ws
+ws://your-network-ip:0/ws
 ```
 部署后:
 ```
-wss://your-deployment.workers.dev:8443/ws
+wss://your-deployment.workers.dev:0/ws
 ```
 
 ## 贡献
